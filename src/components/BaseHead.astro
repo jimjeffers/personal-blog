@@ -19,6 +19,42 @@ const { title, description, image = FallbackImage } = Astro.props;
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
+<script is:inline>
+(function() {
+  var T = {
+    'catppuccin':       ['30 30 46','205 214 244','116 120 163','137 180 250','255 255 255 / 0.05','400'],
+    'ethereal':         ['6 11 30','255 206 173','109 125 182','125 130 217','255 255 255 / 0.05','400'],
+    'everforest':       ['45 53 59','211 198 170','103 120 115','127 187 179','255 255 255 / 0.05','400'],
+    'gruvbox':          ['40 40 40','212 190 152','126 115 96','125 174 163','255 255 255 / 0.05','400'],
+    'hackerman':        ['11 12 22','221 247 255','106 110 149','130 251 156','255 255 255 / 0.05','400'],
+    'kanagawa':         ['31 31 40','220 215 186','113 113 105','126 156 216','255 255 255 / 0.05','400'],
+    'matte-black':      ['18 18 18','190 190 190','100 100 100','230 142 13','255 255 255 / 0.05','400'],
+    'nord':             ['46 52 64','216 222 233','111 125 152','129 161 193','255 255 255 / 0.05','400'],
+    'osaka-jade':       ['17 28 24','193 196 151','83 104 91','80 148 117','255 255 255 / 0.05','400'],
+    'ristretto':        ['44 37 37','230 217 219','148 138 139','243 141 112','255 255 255 / 0.05','400'],
+    'tokyo-night':      ['26 27 38','169 177 214','100 107 163','122 162 247','255 255 255 / 0.05','400'],
+    'catppuccin-latte': ['239 241 245','76 79 105','152 153 168','30 102 245','0 0 0 / 0.05','600'],
+    'flexoki-light':    ['255 252 240','16 15 15','136 134 126','32 94 166','0 0 0 / 0.05','600'],
+    'rose-pine':        ['250 244 237','87 82 121','152 147 165','86 148 159','0 0 0 / 0.05','600']
+  };
+  var keys = Object.keys(T);
+  var id;
+  try { id = localStorage.getItem('omarchy-theme'); } catch(e) {}
+  if (!id || !T[id]) {
+    id = keys[Math.floor(Math.random() * keys.length)];
+    try { localStorage.setItem('omarchy-theme', id); } catch(e) {}
+  }
+  var v = T[id];
+  var d = document.documentElement;
+  d.setAttribute('data-theme', id);
+  d.style.setProperty('--color-bg', v[0]);
+  d.style.setProperty('--color-text', v[1]);
+  d.style.setProperty('--color-text-secondary', v[2]);
+  d.style.setProperty('--color-accent', v[3]);
+  d.style.setProperty('--color-border', v[4]);
+  d.style.setProperty('--header-weight', v[5]);
+})();
+</script>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="sitemap" href="/sitemap-index.xml" />
@@ -30,9 +66,10 @@ const { title, description, image = FallbackImage } = Astro.props;
 />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Font preloads -->
-<link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
-<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin />
+<!-- Google Fonts - Jost + Lato -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Lato:wght@400;700&display=swap" rel="stylesheet" />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
