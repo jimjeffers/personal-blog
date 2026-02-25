@@ -1,12 +1,16 @@
 ---
 import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
 import Layout from '../layouts/BlogPost.astro';
+import GitHubChart from '../components/GitHubChart.astro';
+import { THEMES } from '../data/themes';
+
+const GITHUB_USERNAME = 'jimjeffers';
 ---
 
 <Layout
 	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
+	description="Software development engineer in Portland, OR"
+	pubDate={new Date('February 25 2026')}
 	heroImage={AboutHeroImage}
 >
 	<p>
@@ -60,4 +64,37 @@ import Layout from '../layouts/BlogPost.astro';
 		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
 		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
 	</p>
+
+	<h2 id="github-activity">GitHub Activity</h2>
+	<div class="github-chart-container">
+		<img 
+			id="github-chart"
+			src={`https://ghchart.rshah.org/${THEMES[0].accentHex.replace('#', '')}/${GITHUB_USERNAME}`}
+			alt="Jim Jeffers' GitHub Contribution Graph" 
+			loading="lazy"
+		/>
+	</div>
+	<p>I build what excites me and release it all as open source.</p>
+	<p>
+		<a href={`https://github.com/${GITHUB_USERNAME}/`}>Follow me on GitHub</a> 
+		and check out my projects.
+	</p>
+
+	<GitHubChart username={GITHUB_USERNAME} />
+	
+	<style>
+		.github-chart-container {
+			background: rgb(var(--color-text) / 0.05);
+			border-radius: 0.5rem;
+			padding: 0.5rem;
+			margin: 1rem 0;
+			overflow: hidden;
+		}
+		.github-chart-container img {
+			width: 100%;
+			height: auto;
+			display: block;
+			border-radius: 0.25rem;
+		}
+	</style>
 </Layout>

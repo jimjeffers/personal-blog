@@ -1,0 +1,279 @@
+---
+import { THEMES } from '../data/themes';
+
+const darkThemes = THEMES.filter(t => t.mode === 'dark');
+const lightThemes = THEMES.filter(t => t.mode === 'light');
+---
+
+<div class="theme-selector">
+  <button
+    type="button"
+    class="theme-trigger"
+    aria-haspopup="listbox"
+    aria-expanded="false"
+    aria-label="Select theme"
+  >
+    <span class="trigger-name">Theme</span>
+    <svg class="chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+      <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <div class="theme-dropdown" hidden>
+    <div class="theme-columns">
+      <div class="theme-column">
+        <div class="column-header">Dark</div>
+        <ul class="theme-list" role="group" aria-label="Dark themes">
+          {darkThemes.map((theme) => (
+            <li
+              role="option"
+              data-theme-id={theme.id}
+              data-bg={theme.bg}
+              data-text={theme.text}
+              data-text-secondary={theme.textSecondary}
+              data-accent={theme.accent}
+              data-accent-hex={theme.accentHex}
+              data-border={theme.border}
+              data-header-weight={theme.headerWeight}
+              data-bg-hex={theme.bgHex}
+            >
+              <span class="option-name">{theme.name}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="theme-column">
+        <div class="column-header">Light</div>
+        <ul class="theme-list" role="group" aria-label="Light themes">
+          {lightThemes.map((theme) => (
+            <li
+              role="option"
+              data-theme-id={theme.id}
+              data-bg={theme.bg}
+              data-text={theme.text}
+              data-text-secondary={theme.textSecondary}
+              data-accent={theme.accent}
+              data-accent-hex={theme.accentHex}
+              data-border={theme.border}
+              data-header-weight={theme.headerWeight}
+              data-bg-hex={theme.bgHex}
+            >
+              <span class="option-name">{theme.name}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initThemeSelector() {
+    const selector = document.querySelector('.theme-selector');
+    if (!selector) return;
+
+    const trigger = selector.querySelector('.theme-trigger') as HTMLButtonElement;
+    const dropdown = selector.querySelector('.theme-dropdown') as HTMLDivElement;
+    const options = selector.querySelectorAll('[role="option"]');
+    const triggerName = trigger.querySelector('.trigger-name') as HTMLSpanElement;
+
+    // Store the currently applied theme
+    let activeThemeId = document.documentElement.getAttribute('data-theme') || '';
+
+    function setThemeProperties(option: Element) {
+      const id = option.getAttribute('data-theme-id')!;
+      const bg = option.getAttribute('data-bg')!;
+      const text = option.getAttribute('data-text')!;
+      const textSecondary = option.getAttribute('data-text-secondary')!;
+      const accent = option.getAttribute('data-accent')!;
+      const border = option.getAttribute('data-border')!;
+      const headerWeight = option.getAttribute('data-header-weight')!;
+
+      const d = document.documentElement;
+      d.setAttribute('data-theme', id);
+      d.style.setProperty('--color-bg', bg);
+      d.style.setProperty('--color-text', text);
+      d.style.setProperty('--color-text-secondary', textSecondary);
+      d.style.setProperty('--color-accent', accent);
+      d.style.setProperty('--color-border', border);
+      d.style.setProperty('--header-weight', headerWeight);
+
+      return id;
+    }
+
+    function applyTheme(option: Element) {
+      const id = setThemeProperties(option);
+      activeThemeId = id;
+
+      try { localStorage.setItem('omarchy-theme', id); } catch {}
+
+      updateDisplay(option);
+      close();
+    }
+
+    function updateDisplay(option: Element) {
+      const name = option.querySelector('.option-name')?.textContent || 'Theme';
+      triggerName.textContent = name;
+    }
+
+    function initDisplay() {
+      const currentId = document.documentElement.getAttribute('data-theme');
+      if (!currentId) return;
+      activeThemeId = currentId;
+      const active = selector.querySelector(`[data-theme-id="${currentId}"]`);
+      if (active) updateDisplay(active);
+    }
+
+    function open() {
+      dropdown.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+    }
+
+    function close() {
+      dropdown.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    function toggle() {
+      dropdown.hidden ? open() : close();
+    }
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggle();
+    });
+
+    options.forEach((option) => {
+      option.addEventListener('click', () => applyTheme(option));
+      
+      // Show preview on the button itself when hovering
+      option.addEventListener('mouseenter', () => {
+        const bgHex = option.getAttribute('data-bg-hex');
+        const accentHex = option.getAttribute('data-accent-hex');
+        if (bgHex && accentHex) {
+          option.style.backgroundColor = bgHex;
+          option.style.color = accentHex;
+        }
+      });
+      
+      // Reset button preview on mouse leave
+      option.addEventListener('mouseleave', () => {
+        option.style.backgroundColor = '';
+        option.style.color = '';
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!selector.contains(e.target as Node)) {
+        close();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        close();
+      }
+    });
+
+    initDisplay();
+  }
+
+  // Run on initial load and on Astro view transitions
+  initThemeSelector();
+  document.addEventListener('astro:after-swap', initThemeSelector);
+</script>
+
+<style>
+  .theme-selector {
+    position: relative;
+  }
+
+  .theme-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: none;
+    border: none;
+    color: rgb(var(--color-text-secondary));
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    font-size: 0.65rem;
+    line-height: 1;
+    transition: color 0.15s ease;
+  }
+
+  .theme-trigger:hover {
+    color: rgb(var(--color-text));
+  }
+
+  .chevron {
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+  }
+
+  .theme-trigger[aria-expanded="true"] .chevron {
+    transform: rotate(180deg);
+  }
+
+  .theme-dropdown {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    z-index: 200;
+    background-color: rgb(var(--color-bg));
+    border: 1px solid rgb(var(--color-text) / 0.1);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    box-shadow: 0 4px 16px rgb(0 0 0 / 0.15);
+  }
+
+  .theme-dropdown[hidden] {
+    display: none;
+  }
+
+  .theme-columns {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .theme-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .column-header {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: rgb(var(--color-text-secondary));
+    padding: 0.375rem 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .theme-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    min-width: 7rem;
+  }
+
+  .theme-list [role="option"] {
+    display: flex;
+    align-items: center;
+    padding: 0.4rem 0.5rem;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgb(var(--color-text));
+    transition: background-color 0.15s ease, color 0.15s ease;
+    border-radius: 0.25rem;
+  }
+
+  .theme-list [role="option"]:hover {
+    /* Theme colors applied via JS on hover */
+  }
+
+  .option-name {
+    white-space: nowrap;
+  }
+</style>

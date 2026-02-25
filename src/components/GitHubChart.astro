@@ -1,0 +1,78 @@
+---
+interface Props {
+  username: string;
+}
+
+const { username } = Astro.props;
+---
+
+<script define:vars={{ username }}>
+  function initGitHubChart() {
+    const chart = document.getElementById('github-chart');
+    if (!chart) return;
+
+    // Get theme accent hex from the current theme option or data attribute
+    function getCurrentAccentHex() {
+      // Check document.documentElement for data-theme
+      const currentThemeId = document.documentElement.getAttribute('data-theme');
+      if (currentThemeId) {
+        // Look up in the theme list
+        const themeOption = document.querySelector(`[data-theme-id="${currentThemeId}"]`);
+        if (themeOption) {
+          const accent = themeOption.getAttribute('data-accent-hex');
+          if (accent) return accent.replace('#', '');
+        }
+      }
+
+      // Fallback: try to get from active theme option
+      const activeTheme = document.querySelector('.theme-list [role="option"].active');
+      if (activeTheme) {
+        const accent = activeTheme.getAttribute('data-accent-hex');
+        if (accent) return accent.replace('#', '');
+      }
+
+      // Default fallback - catppuccin accent
+      return '89b4fa';
+    }
+
+    function updateChartColor() {
+      const accentHex = getCurrentAccentHex();
+      const newSrc = `https://ghchart.rshah.org/${accentHex}/${username}`;
+      
+      // Only update if different to avoid unnecessary reloads
+      if (chart.src !== newSrc) {
+        chart.src = newSrc;
+      }
+    }
+
+    // Add error handling for image load failures
+    chart.addEventListener('error', () => {
+      // Fallback to default green chart
+      chart.src = `https://ghchart.rshah.org/${username}`;
+    });
+
+    // Initial update
+    updateChartColor();
+
+    // Listen for theme changes via MutationObserver
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'data-theme' || mutation.attributeName === 'style') {
+          updateChartColor();
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme', 'style']
+    });
+
+    // Also listen for custom theme change event
+    document.addEventListener('themechange', updateChartColor);
+  }
+
+  // Run on load and after Astro view transitions
+  initGitHubChart();
+  document.addEventListener('astro:after-swap', initGitHubChart);
+</script>
