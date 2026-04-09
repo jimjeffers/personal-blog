@@ -95,6 +95,23 @@
     margin-bottom: 1.5em;
   }
 
+  article ul,
+  article ol {
+    margin: 0 0 1.5em 0;
+    padding-left: 1.5em;
+  }
+  article ul { list-style: disc; }
+  article ol { list-style: decimal; }
+  article li {
+    margin-bottom: 0.5em;
+  }
+  article li::marker {
+    color: rgb(var(--color-accent));
+  }
+  article li > p {
+    margin-bottom: 0.5em;
+  }
+
   a {
     color: inherit;
     text-decoration: underline;
