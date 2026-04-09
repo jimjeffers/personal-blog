@@ -1,0 +1,56 @@
+---
+title: Hello
+description: "An introduction to Jim, a lifelong programmer turned CTO of eDNA Explorer, and his return to writing about leadership, coding, business, and the transformative impact of AI."
+pubDate: 2026-01-28
+---
+import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
+import Layout from '../layouts/BlogPost.astro';
+import GitHubChart from '../components/GitHubChart.astro';
+import { THEMES } from '../data/themes';
+
+export const GITHUB_USERNAME = 'jimjeffers';
+
+<Layout
+  title="Hello"
+  description="An introduction to Jim, a lifelong programmer turned CTO of eDNA Explorer, and his return to writing about leadership, coding, business, and the transformative impact of AI."
+  pubDate={new Date('January 28 2026')}
+>
+
+I'm Jim. I became fascinated with computers at the age of five when our family purchased a Tandy computer from Radio Shack. Thirty years ago, my Uncle introduced me to [QBasic](https://en.wikipedia.org/wiki/QBasic) via the '[gorillas](https://archive.org/details/GorillasQbasic)' game and I've been hooked on programming ever since. When I was in high school I got into [Macromedia flash](https://en.wikipedia.org/wiki/Macromedia) and inadvertently started my career as a web developer. I've spent the last 25 years building and launching [SaaS](https://clarus.page) and [mobile](https://apps.apple.com/us/app/air-arizona/id1400658164) products in the [private](https://revolutiones.com/procal) and [public sectors](https://educatorproconnect.org). Today I am co-founder and CTO of [eDNA Explorer](https://ednaexplorer.org/), a bio-informatics platform automating the interpretation of environmental DNA research.
+
+This blog exists as an outlet to start writing again. Writing has been an old habit that I had sadly let go of about 10 years ago. Today my focus lies in leadership, coding, and business.
+
+If I'm not behind a book or a screen you can find me spending time with my family. If I'm not with them — I'm off somewhere riding a bicycle.
+
+## GitHub Activity
+
+<div class="github-chart-container">
+  <img
+    id="github-chart"
+    src={`https://ghchart.rshah.org/${THEMES[0].accentHex.replace('#', '')}/${GITHUB_USERNAME}`}
+    alt="Jim Jeffers' GitHub Contribution Graph"
+    loading="lazy"
+  />
+</div>
+
+I'm building things all of the time. [Follow me on GitHub](https://github.com/jimjeffers/).
+
+<GitHubChart username={GITHUB_USERNAME} />
+
+</Layout>
+
+<style>{`
+  .github-chart-container {
+    background: rgb(var(--color-text) / 0.05);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    margin: 1rem 0;
+    overflow: hidden;
+  }
+  .github-chart-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0.25rem;
+  }
+`}</style>
