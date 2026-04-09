@@ -1,5 +1,5 @@
 ---
-title: "I Didn't Have the editor I Wanted So I Vibecoded One"
+title: "I Didn't Have the Markdown Editor I Wanted So I Vibecoded One"
 description: "How I built a custom markdown editor in one day using Claude Code, TanStack Start, and tailwind to create the writing tool I actually wanted."
 tags:
   - AI-assisted development
