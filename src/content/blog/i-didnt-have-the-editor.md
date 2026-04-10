@@ -12,7 +12,7 @@ pubDate: 'Apr 09 2026'
 category: Development
 ---
 
-Last week I decided to start writing again. [It's been a minute](https://www.donttrustthisguy.com/orientating-yourself-in-ios). But what app should I do all of my writing in today? My IDE isn't exactly well optimized for markdown. Shopping for a dedicated app gives me decision fatigue fast. Why even bother - today I can generate the app of my dreams.
+Last week I decided to start writing again. [It's been a minute](https://www.donttrustthisguy.com/orientating-yourself-in-ios). But what app should I do all of my writing in today? My IDE isn't exactly well optimized for markdown. Shopping for a dedicated app gives me decision fatigue fast. Why even bother - [today I can generate the app of my dreams](https://clarus.page).
 
 My requirements were simple:
 
