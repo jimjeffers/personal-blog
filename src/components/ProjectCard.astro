@@ -1,0 +1,135 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  role: string;
+  client?: string;
+  stack: string[];
+  startDate: Date;
+  endDate?: Date;
+  href: string;
+  externalUrl?: string;
+  featured?: boolean;
+  tags?: string[];
+}
+
+const { title, description, role, client, stack, startDate, endDate, href, externalUrl, featured, tags } = Astro.props;
+
+function formatYear(date: Date) {
+  return date.getFullYear();
+}
+
+const dateLabel = endDate
+  ? `${formatYear(startDate)}–${formatYear(endDate)}`
+  : `${formatYear(startDate)}–Present`;
+---
+
+<li class:list={["project-item", { featured }]}>
+  <a href={href} class="project-link">
+    <div class="project-header">
+      <h2 class="project-title">{title}</h2>
+      {externalUrl && (
+        <span class="external-indicator" aria-hidden="true">↗</span>
+      )}
+    </div>
+    {client && (
+      <p class="project-client">{client}</p>
+    )}
+    <p class="project-description">{description}</p>
+    <div class="project-meta">
+      <span class="project-role">{role}</span>
+      <span class="meta-separator">·</span>
+      <span class="project-dates">{dateLabel}</span>
+    </div>
+    <ul class="project-stack" aria-label="Tech stack">
+      {stack.slice(0, 6).map((tech) => (
+        <li class="stack-tag">{tech}</li>
+      ))}
+      {stack.length > 6 && (
+        <li class="stack-tag stack-more">+{stack.length - 6}</li>
+      )}
+    </ul>
+  </a>
+</li>
+
+<style>
+  .project-item {
+    list-style: none;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgb(var(--color-border));
+  }
+  .project-item:last-child {
+    border-bottom: none;
+  }
+  .project-link {
+    display: block;
+    text-decoration: none;
+  }
+  .project-link:hover {
+    background-color: transparent;
+  }
+  .project-link:hover .project-title {
+    text-decoration: underline;
+    text-decoration-color: rgb(var(--color-accent) / 0.5);
+  }
+  .project-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+  .project-title {
+    font-family: 'Jost', system-ui, sans-serif;
+    font-weight: var(--header-weight);
+    font-size: 1.75rem;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .external-indicator {
+    color: rgb(var(--color-text-secondary));
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .project-client {
+    color: rgb(var(--color-text-secondary));
+    font-size: 0.875rem;
+    margin: 0 0 0.5rem;
+  }
+  .project-description {
+    color: rgb(var(--color-text));
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .project-meta {
+    color: rgb(var(--color-text-secondary));
+    font-size: 0.8125rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.8;
+  }
+  .meta-separator {
+    margin: 0 0.35rem;
+    opacity: 0.5;
+  }
+  .project-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .stack-tag {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    background-color: rgb(var(--color-text) / 0.06);
+    color: rgb(var(--color-text-secondary));
+    font-family: Consolas, Monaco, monospace;
+    transition: background-color 0.1s ease-out;
+  }
+  .stack-more {
+    opacity: 0.6;
+  }
+</style>

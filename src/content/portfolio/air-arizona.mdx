@@ -1,0 +1,36 @@
+---
+title: "Air Arizona"
+description: "A cross-platform mobile app giving Arizona residents real-time air quality data, hourly forecasts, and geofenced health alerts — built for the Arizona Department of Environmental Quality."
+client: "Arizona Department of Environmental Quality"
+role: "Lead Developer"
+stack: ["React Native", "TypeScript", "GraphQL", "AWS", "Expo", "Mapbox", "i18n"]
+startDate: 2021-01-01
+endDate: 2024-01-01
+featured: false
+tags: ["Mobile", "React Native", "Public Health", "Government"]
+order: 6
+---
+
+Air quality is a genuine public health concern across Arizona — particularly in the Phoenix metro area, where dust storms, wildfire smoke, and ozone events can push AQI into hazardous territory with little warning. The Arizona Department of Environmental Quality needed a mobile app that could get actionable air quality information to residents, in their language, on their phone.
+
+## What I Built
+
+Air Arizona is a React Native application built with Expo, shipping to both iOS and Android. It pulls real-time air quality readings from ADEQ's monitoring station network and presents them in a format designed for non-expert users: clear AQI color bands, plain-language health guidance, and location-specific forecasts.
+
+**Multi-pollutant tracking** covers the six standard EPA criteria pollutants — PM2.5, PM10, ozone, CO, NO2, SO2 — with individual gauges and combined AQI scores. Most consumer air quality apps show only PM2.5; the full pollutant breakdown was a specific requirement for ADEQ's research and public health programs.
+
+**Hourly forecast charts** display predicted AQI for the next 24 hours based on meteorological models, letting users plan outdoor activities around air quality windows.
+
+**Geofenced alerts** use device location to deliver push notifications when air quality at the user's current location crosses health thresholds — even if that location has changed since the user last opened the app.
+
+**Bilingual localization** in English and Spanish covers all UI strings, health guidance copy, and push notification text via a structured i18n layer.
+
+The data layer runs through a GraphQL API backed by AWS infrastructure, with a caching layer to handle traffic spikes during air quality events when app usage tends to surge.
+
+## Technical Highlights
+
+- React Native + Expo for cross-platform iOS and Android from a single codebase
+- Multi-pollutant AQI tracking across all 6 EPA criteria pollutants
+- Hourly forecast charts with meteorological model integration
+- Geofenced push notification alerts based on current device location
+- Full English/Spanish localization via GraphQL API + AWS
