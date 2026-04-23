@@ -6,7 +6,7 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'portfolio'>['data'];
 
-const { title, description, role, client, stack, startDate, endDate, externalUrl, tags } = Astro.props;
+const { title, description, role, client, stack, startDate, endDate, externalUrl, screenshots, tags } = Astro.props;
 
 function formatYear(date: Date) {
   return date.getFullYear();
@@ -117,6 +117,22 @@ const dateLabel = endDate
         font-weight: 700;
         color: rgb(var(--color-text));
       }
+      .screenshot-gallery {
+        display: flex;
+        gap: 0.75rem;
+        overflow-x: auto;
+        margin: 0 0 2.5rem;
+        padding-bottom: 0.5rem;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+      }
+      .screenshot-gallery img {
+        height: 28rem;
+        width: auto;
+        border-radius: 1rem;
+        flex-shrink: 0;
+        display: block;
+      }
     </style>
   </head>
   <body>
@@ -151,6 +167,14 @@ const dateLabel = endDate
             <li class="stack-tag">{tech}</li>
           ))}
         </ul>
+
+        {screenshots && screenshots.length > 0 && (
+          <div class="screenshot-gallery" role="region" aria-label="App screenshots">
+            {screenshots.map((src, i) => (
+              <img src={src} alt={`${title} screenshot ${i + 1}`} loading="lazy" />
+            ))}
+          </div>
+        )}
 
         <div class="project-body">
           <slot />
