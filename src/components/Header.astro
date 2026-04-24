@@ -2,9 +2,15 @@
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 import ThemeSelector from './ThemeSelector.astro';
+
+interface Props {
+	transparent?: boolean;
+}
+
+const { transparent = false } = Astro.props;
 ---
 
-<header>
+<header class:list={[{ 'header--transparent': transparent }]} data-transparent={transparent ? 'true' : undefined}>
 	<nav>
 		<div class="nav-links">
 			<HeaderLink href="/">Blog</HeaderLink>
@@ -34,6 +40,42 @@ import ThemeSelector from './ThemeSelector.astro';
 		z-index: 100;
 		background-color: rgb(var(--color-bg));
 		padding: 1rem 1.5rem;
+		transition: background-color 0.25s ease-out, color 0.25s ease-out, backdrop-filter 0.25s ease-out;
+	}
+	header.header--transparent {
+		background-color: color-mix(in srgb, var(--project-bg, rgb(var(--color-bg))) 82%, transparent);
+		color: var(--project-fg, rgb(var(--color-text)));
+		backdrop-filter: blur(14px) saturate(1.2);
+		-webkit-backdrop-filter: blur(14px) saturate(1.2);
+	}
+	header.header--transparent.is-scrolled {
+		background-color: rgb(var(--color-bg));
+		color: inherit;
+		backdrop-filter: none;
+		-webkit-backdrop-filter: none;
+	}
+	header.header--transparent .social-links a,
+	header.header--transparent :global(.nav-links a),
+	header.header--transparent :global(.theme-trigger) {
+		color: var(--project-muted, rgb(var(--color-text-secondary)));
+		transition: color 0.25s ease-out;
+	}
+	header.header--transparent .social-links a:hover,
+	header.header--transparent :global(.nav-links a.active),
+	header.header--transparent :global(.nav-links a:hover),
+	header.header--transparent :global(.theme-trigger:hover) {
+		color: var(--project-fg, rgb(var(--color-text)));
+	}
+	header.header--transparent.is-scrolled .social-links a,
+	header.header--transparent.is-scrolled :global(.nav-links a),
+	header.header--transparent.is-scrolled :global(.theme-trigger) {
+		color: rgb(var(--color-text-secondary));
+	}
+	header.header--transparent.is-scrolled .social-links a:hover,
+	header.header--transparent.is-scrolled :global(.nav-links a.active),
+	header.header--transparent.is-scrolled :global(.nav-links a:hover),
+	header.header--transparent.is-scrolled :global(.theme-trigger:hover) {
+		color: rgb(var(--color-text));
 	}
 	@media (min-width: 768px) {
 		header {
@@ -53,6 +95,14 @@ import ThemeSelector from './ThemeSelector.astro';
 			height: 3rem;
 			background: linear-gradient(to bottom, rgb(var(--color-bg)), transparent);
 			pointer-events: none;
+			opacity: 1;
+			transition: opacity 0.25s ease-out;
+		}
+		header.header--transparent::after {
+			opacity: 0;
+		}
+		header.header--transparent.is-scrolled::after {
+			opacity: 1;
 		}
 	}
 	nav {
@@ -95,3 +145,24 @@ import ThemeSelector from './ThemeSelector.astro';
 		gap: 1.5rem;
 	}
 </style>
+
+<script>
+	const header = document.querySelector('header[data-transparent="true"]') as HTMLElement | null;
+	if (header) {
+		const hero = document.querySelector('.project-hero') as HTMLElement | null;
+		const getThreshold = () => {
+			if (!hero) return 0;
+			return hero.offsetTop + hero.offsetHeight - header.offsetHeight;
+		};
+		let threshold = getThreshold();
+		const update = () => {
+			header.classList.toggle('is-scrolled', window.scrollY >= threshold);
+		};
+		window.addEventListener('scroll', update, { passive: true });
+		window.addEventListener('resize', () => {
+			threshold = getThreshold();
+			update();
+		});
+		update();
+	}
+</script>

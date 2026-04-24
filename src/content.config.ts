@@ -31,7 +31,7 @@ const portfolio = defineCollection({
 				accent: z.string().optional(),
 				muted: z.string().optional(),
 				heading: z.string().optional(),
-				variant: z.enum(['desktop', 'phones']).default('desktop'),
+				variant: z.enum(['desktop', 'phones', 'marketing-row', 'clarus']).default('desktop'),
 				screenshots: z.array(z.string()).optional(),
 			}).optional(),
 			screenshots: z.array(z.string()).optional(),

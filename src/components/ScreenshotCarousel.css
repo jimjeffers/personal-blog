@@ -7,7 +7,7 @@
 .screenshot-carousel__viewport {
   overflow: hidden;
   border: 1px solid rgb(var(--color-border));
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   background:
     linear-gradient(180deg, rgb(var(--color-text) / 0.04), rgb(var(--color-text) / 0.02)),
     rgb(var(--color-bg));
@@ -22,19 +22,23 @@
 }
 
 .screenshot-carousel__slide {
-  flex: 0 0 clamp(11.5rem, 48%, 14rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 min(78vw, 72rem);
   min-width: 0;
   padding: 0 0.5rem;
 }
 
 .screenshot-carousel__image {
   display: block;
-  width: 100%;
-  aspect-ratio: 896 / 1966;
+  width: auto;
+  max-width: 100%;
+  max-height: min(72vh, 42rem);
   height: auto;
-  border-radius: 1.25rem;
+  border-radius: 0.35rem;
   object-fit: contain;
-  box-shadow: 0 1rem 2rem rgb(0 0 0 / 0.18);
+  box-shadow: 0 0.85rem 1.6rem rgb(0 0 0 / 0.14);
 }
 
 .screenshot-carousel__controls {
@@ -112,6 +116,6 @@
   }
 
   .screenshot-carousel__slide {
-    flex-basis: min(74%, 13rem);
+    flex-basis: min(84%, 38rem);
   }
 }
