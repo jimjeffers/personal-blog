@@ -1,0 +1,117 @@
+.screenshot-carousel {
+  margin: 0 0 2.75rem;
+  max-width: none;
+  width: calc(100vw - var(--page-gutter, 1.5rem));
+}
+
+.screenshot-carousel__viewport {
+  overflow: hidden;
+  border: 1px solid rgb(var(--color-border));
+  border-radius: 0.75rem;
+  background:
+    linear-gradient(180deg, rgb(var(--color-text) / 0.04), rgb(var(--color-text) / 0.02)),
+    rgb(var(--color-bg));
+}
+
+.screenshot-carousel__container {
+  display: flex;
+  align-items: center;
+  min-height: 0;
+  padding: 1rem 0;
+  touch-action: pan-y pinch-zoom;
+}
+
+.screenshot-carousel__slide {
+  flex: 0 0 clamp(11.5rem, 48%, 14rem);
+  min-width: 0;
+  padding: 0 0.5rem;
+}
+
+.screenshot-carousel__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 896 / 1966;
+  height: auto;
+  border-radius: 1.25rem;
+  object-fit: contain;
+  box-shadow: 0 1rem 2rem rgb(0 0 0 / 0.18);
+}
+
+.screenshot-carousel__controls {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr) 2.25rem;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.875rem;
+}
+
+.screenshot-carousel__button,
+.screenshot-carousel__dot {
+  appearance: none;
+  border: 0;
+  color: rgb(var(--color-text));
+  cursor: pointer;
+  transition:
+    background-color 0.1s ease-out,
+    color 0.1s ease-out,
+    opacity 0.1s ease-out,
+    transform 0.1s ease-out;
+}
+
+.screenshot-carousel__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background-color: rgb(var(--color-text) / 0.06);
+}
+
+.screenshot-carousel__button:hover {
+  background-color: rgb(var(--color-text) / 0.12);
+}
+
+.screenshot-carousel__button:active {
+  transform: scale(0.96);
+}
+
+.screenshot-carousel__dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.screenshot-carousel__dot {
+  width: 0.48rem;
+  height: 0.48rem;
+  padding: 0;
+  border-radius: 999px;
+  background-color: rgb(var(--color-text) / 0.18);
+}
+
+.screenshot-carousel__dot:hover,
+.screenshot-carousel__dot.is-selected {
+  background-color: rgb(var(--color-text) / 0.65);
+}
+
+.screenshot-carousel__button:focus-visible,
+.screenshot-carousel__dot:focus-visible {
+  outline: 2px solid rgb(var(--color-accent));
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .screenshot-carousel__viewport {
+    border-radius: 0.625rem;
+  }
+
+  .screenshot-carousel__container {
+    padding: 0.75rem 0;
+  }
+
+  .screenshot-carousel__slide {
+    flex-basis: min(74%, 13rem);
+  }
+}
