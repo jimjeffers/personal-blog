@@ -1,0 +1,52 @@
+---
+title: "Educator PRO Connect"
+description: "An AI-powered matching platform connecting K–12 educators with professional development opportunities, built for the Maricopa County School Superintendent's office."
+client: "Maricopa County School Superintendent"
+role: "Sole Developer"
+stack: ["TypeScript", "React", "Python", "FastAPI", "PostgreSQL", "pgvector", "OpenAI API", "GraphQL", "Apollo", "React Query", "SQLAlchemy"]
+startDate: 2020-09-01
+featured: true
+hero:
+  background: "#132048"
+  foreground: "#ffffff"
+  accent: "#F26724"
+  muted: "rgba(255,255,255,0.76)"
+  heading: "AI matching platform for K–12 educator development"
+  variant: desktop
+  screenshots:
+    - /portfolio/educator-pro-connect/epc-dashboard.png
+    - /portfolio/educator-pro-connect/epc-event.png
+    - /portfolio/educator-pro-connect/epc-signup.png
+screenshotDisplay: carousel
+screenshots:
+  - /portfolio/educator-pro-connect/epc-dashboard.png
+  - /portfolio/educator-pro-connect/epc-event.png
+  - /portfolio/educator-pro-connect/epc-signup.png
+tags: ["AI", "Full-Stack", "EdTech", "Matching Systems"]
+order: 4
+externalUrl: "https://educatorproconnect.org"
+---
+
+Maricopa County is home to over 60 school districts and tens of thousands of educators. The Superintendent's office runs professional development programs — certifications, workshops, coaching engagements — but connecting the right educator to the right opportunity had historically been a manual, spreadsheet-driven process.
+
+I was brought in as the sole developer to build a platform that could automate this matching work using AI and serve as the infrastructure for educator credentialing across the county.
+
+## What I Built
+
+Starting from a product brief and a whiteboard, I designed and built the entire platform: a Python/FastAPI backend, a PostgreSQL database, a GraphQL API layer, and a TypeScript/React frontend — all running on AWS.
+
+**The AI matching engine** is the core of the platform. Educator profiles — including teaching subjects, grade levels, certifications held, and professional goals — are embedded as 1536-dimensional vectors using the OpenAI embeddings API and stored in PostgreSQL using the pgvector extension. Opportunity listings are embedded the same way. Matching runs as a vector similarity search, surfacing the most semantically relevant opportunities for each educator rather than relying on keyword matching or manual tagging.
+
+**The data model** covers 80+ REST endpoints and GraphQL resolvers handling educator profiles, district rosters, opportunity listings, application workflows, and credentialing records.
+
+**The migration** involved moving the backend from Node.js/GraphQL to Python/FastAPI with SQLAlchemy 2.0 and Alembic — maintaining dual data-fetching during the transition period (Apollo + React Query) to avoid a hard cutover.
+
+**A real-time messaging layer** supports communication between educators and program coordinators built on WebSocket with a notifications system for application status changes.
+
+## Technical Highlights
+
+- OpenAI embeddings (1536-dim) + pgvector for semantic educator-opportunity matching
+- 80+ REST/GraphQL endpoints across educator, district, opportunity, and credentialing domains
+- Python/FastAPI + SQLAlchemy 2.0 backend with Alembic migrations
+- Live migration from Node.js/GraphQL to Python backend with dual data-fetching during transition
+- Real-time messaging and notification system via WebSocket

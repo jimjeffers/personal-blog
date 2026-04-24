@@ -1,0 +1,53 @@
+---
+title: "eDNA Explorer"
+description: "An AI-powered environmental genomics platform that helps scientists analyze environmental DNA data to track biodiversity, detect invasive species, and monitor ecosystems at scale."
+client: "eDNA Explorer / UC Research Consortium"
+role: "CTO & Principal Engineer"
+stack: ["TypeScript", "React", "Python", "PostgreSQL", "FastAPI", "pgvector", "LLMs", "GBIF API", "NCBI BLAST"]
+startDate: 2024-02-01
+featured: true
+hero:
+  background: "#092f47"
+  foreground: "#f8fbf4"
+  accent: "#8dbb3f"
+  muted: "rgba(248,251,244,0.76)"
+  heading: "AI-powered eDNA species monitoring platform"
+  variant: desktop
+  screenshots:
+    - /portfolio/edna-explorer/screenshot-1.png
+screenshotDisplay: none
+screenshots:
+  - /portfolio/edna-explorer/screenshot-1.png
+  - /portfolio/edna-explorer/screenshot-2.png
+  - /portfolio/edna-explorer/screenshot-3.png
+  - /portfolio/edna-explorer/screenshot-4.png
+tags: ["AI", "Bioinformatics", "Full-Stack", "Research"]
+order: 2
+externalUrl: "https://ednaexplorer.org"
+---
+
+eDNA (environmental DNA) is transforming how scientists study ecosystems — instead of physically observing organisms, researchers can sequence genetic material found in water, soil, or air samples to detect what species are present. The catch: the data pipeline from raw sequences to ecological insight is fragmented, slow, and requires deep bioinformatics expertise.
+
+I joined as CTO and lead engineer to architect and build a platform that makes this pipeline accessible to a much broader community of researchers and conservationists.
+
+## What I Built
+
+Starting from zero, I architected a full production platform in TypeScript, React, and Python — a Turborepo monorepo encompassing a data ingestion pipeline, a PostgreSQL + PostGIS database backend, a FastAPI/Python API layer, and a React frontend for data exploration and visualization.
+
+**The LLM-powered research agent** is the centerpiece: it connects to NCBI BLAST for taxonomic identification and the GBIF Global Biodiversity Information Facility API for ecological context, using tool-calling to automate the workflow of distinguishing ecological outliers from data artifacts. What previously required a specialist to interpret now produces structured research summaries automatically.
+
+**The geospatial layer** uses PostGIS for spatial queries, allowing researchers to query biodiversity data by watershed, elevation range, or protected area boundary — not just by GPS coordinate.
+
+**The data model** is built to handle the heterogeneity of eDNA datasets: different primer sets, sequencing platforms, and bioinformatic pipelines all producing subtly incompatible output formats. The schema normalizes these differences while preserving the provenance metadata researchers need to reproduce results.
+
+## Technical Highlights
+
+- Turborepo monorepo with shared type definitions between Python and TypeScript services
+- LLM tool-calling pipeline for automated taxonomic validation against NCBI + GBIF
+- PostgreSQL with pgvector for embedding-based similarity search across species occurrence records
+- PostGIS for spatial queries across watershed and protected area boundaries
+- Role-based access control for multi-institution research collaboration
+
+## Impact
+
+The platform is actively used by researchers at multiple UC campuses and is part of a broader effort to democratize biodiversity monitoring for conservation organizations that lack dedicated bioinformatics staff.

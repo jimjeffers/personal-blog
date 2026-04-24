@@ -1,0 +1,54 @@
+---
+title: "Clarus"
+description: "An AI writing app designed for creative writers — helping authors find their voice, sharpen their prose, and move past blocks without losing authorial control."
+role: "Founder & Lead Engineer"
+stack: ["TypeScript", "React", "Astro", "Claude API", "Node.js", "Tailwind CSS"]
+startDate: 2024-01-01
+featured: true
+hero:
+  background: "#fbfaf7"
+  foreground: "#10131c"
+  accent: "#0969da"
+  muted: "rgba(16,19,28,0.68)"
+  heading: "AI writing tools that preserve author voice"
+  variant: clarus
+  screenshots:
+    - /portfolio/06-light.png
+    - /portfolio/01-light.png
+screenshotDisplay: carousel
+screenshots:
+  - /portfolio/06-light.png
+  - /portfolio/01-light.png
+tags: ["AI", "Writing Tools", "SaaS", "Product"]
+order: 1
+externalUrl: "https://clarus.page"
+---
+
+Clarus started from a simple frustration: AI writing tools kept trying to write *for* writers rather than write *with* them. Most tools optimize for speed and output volume — Clarus optimizes for voice, craft, and the experience of the writer.
+
+## The Problem
+
+Creative writers — novelists, essayists, screenwriters — don't want their words replaced. They want a collaborator that understands narrative tension, character voice, pacing, and subtext. They want to get unstuck without losing the thread of what made their work theirs.
+
+Existing tools give generic completions. Clarus gives contextual craft support.
+
+## What I Built
+
+Clarus is a full-stack web application built on Astro with a React writing environment at its core. The AI layer is built on Anthropic's Claude API, with custom prompt architecture designed to act as a thoughtful writing partner rather than a completion engine.
+
+Key features include:
+
+- **Voice preservation** — the system learns from a writer's existing prose to ensure suggestions feel stylistically consistent
+- **Scene-level context** — rather than operating sentence by sentence, Clarus maintains awareness of chapter and narrative arc
+- **Craft mode vs. flow mode** — two distinct interaction models: one for drafting without interruption, one for deep revision work
+- **Block prompts** — structured creative prompts for when writers are stuck, tuned to the genre and tone of their current project
+
+## Technical Highlights
+
+The writing environment is a custom rich-text editor built in React with tiptap, with real-time AI annotations that appear in a side channel rather than inline — preserving the writer's visual relationship with their own work.
+
+The backend handles streaming AI responses with a custom token budget system to keep interactions snappy even on longer documents. Session state is maintained across writes using a lightweight server-side cache.
+
+## Status
+
+Clarus is in active development and early access. Growing a community of writers through Product Hunt, direct outreach to writing communities, and partnerships with writing coaches.

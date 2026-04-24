@@ -1,0 +1,58 @@
+---
+title: "ProCal Scheduling SaaS"
+description: "A production scheduling platform for the entertainment industry — built from scratch and scaled over 7 years to serve 3,000+ users and 400,000+ events at Netflix, BBC Studios, Blumhouse, and Sony Television."
+client: "NPACT / Revolution Entertainment"
+role: "Sole Developer & Architect"
+stack: ["React", "TypeScript", "Konva", "AWS Lambda", "PostgreSQL", "PDF Generation", "REST APIs"]
+startDate: 2016-09-01
+endDate: 2023-05-01
+featured: false
+hero:
+  background: "#171c40"
+  foreground: "#ffffff"
+  accent: "#c45ac5"
+  muted: "rgba(255,255,255,0.78)"
+  heading: "Production scheduling for entertainment teams"
+  variant: desktop
+  screenshots:
+    - /portfolio/procal/procal.png
+    - /portfolio/procal/procal-edit-event.png
+screenshotDisplay: carousel
+screenshots:
+  - /portfolio/procal/procal.png
+  - /portfolio/procal/procal-edit-event.png
+tags: ["SaaS", "Entertainment", "Canvas Engineering", "Full-Stack"]
+order: 5
+---
+
+Entertainment production companies run on schedules — shoot days, crew calls, location bookings, talent windows, post-production timelines. Managing these across a slate of shows, with constantly shifting availability and overlapping constraints, is genuinely complex operational work.
+
+ProCal was built to replace the industry's reliance on large Excel grids and manual calendar logic with a purpose-built scheduling tool that understood the vocabulary of production.
+
+## The Scale
+
+Over 7 years as sole developer, I made 97% of 6,000+ commits to the codebase. The platform scaled to:
+
+- 3,000+ active users
+- 400,000+ scheduled events
+- Clients including Netflix, BBC Studios, Blumhouse Productions, and Sony Television
+
+## What I Built
+
+The heart of ProCal is a **canvas-based calendar engine** built on Konva and react-konva. Production schedules don't map cleanly to standard calendar UI paradigms — they involve overlapping events, multi-day blocks, crew and resource conflicts, and the need to visualize months of production at a glance. A canvas renderer gives the flexibility to handle these constraints without fighting the DOM.
+
+**Six calendar view modes** — from a day-level call sheet view to a multi-month production arc view — each with their own render logic but sharing a common event data model.
+
+**Drag-and-drop scheduling** with conflict detection: moving a shoot day automatically flags crew availability conflicts, location double-bookings, and talent holds in adjacent productions.
+
+**Snapshot versioning** lets production coordinators save named versions of a schedule — a feature that proved essential when studios needed to model "what if" scenarios before locking a production calendar.
+
+**PDF generation via AWS Lambda** produces call sheets and production reports formatted to industry standard, generated server-side to keep output consistent regardless of browser or OS.
+
+## Technical Highlights
+
+- Custom canvas-based calendar engine (Konva/react-konva) with 6 view modes
+- Drag-and-drop scheduling with multi-resource conflict detection
+- Snapshot versioning for production calendar scenarios
+- PDF generation via AWS Lambda for industry-standard call sheets
+- Scaled to 3,000+ users and 400,000+ events over 7 years as sole developer

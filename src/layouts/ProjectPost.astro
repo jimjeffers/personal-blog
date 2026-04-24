@@ -1,0 +1,643 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import ScreenshotCarousel from '../components/ScreenshotCarousel';
+
+type Props = CollectionEntry<'portfolio'>['data'];
+
+const {
+  title,
+  description,
+  role,
+  client,
+  stack,
+  startDate,
+  endDate,
+  externalUrl,
+  hero,
+  screenshots,
+  screenshotDisplay,
+  tags,
+} = Astro.props;
+
+function formatYear(date: Date) {
+  return date.getFullYear();
+}
+
+const dateLabel = endDate
+  ? `${formatYear(startDate)}–${formatYear(endDate)}`
+  : `${formatYear(startDate)}–Present`;
+
+const heroScreenshots = hero?.screenshots ?? [];
+const heroScreenshot = heroScreenshots[0];
+const heroStyle = hero
+  ? [
+      `--project-bg: ${hero.background}`,
+      `--project-fg: ${hero.foreground}`,
+      `--project-accent: ${hero.accent ?? hero.foreground}`,
+      `--project-muted: ${hero.muted ?? hero.foreground}`,
+    ].join(';')
+  : undefined;
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={`${title} — Jim Jeffers`} description={description} />
+    <style>
+      article {
+        max-width: 40rem;
+        margin: 0;
+        padding: 0 0 3rem;
+      }
+      .project-page {
+        padding-top: 0;
+      }
+      .project-page:has(.project-hero) article {
+        padding-top: 4rem;
+      }
+      .project-hero {
+        --hero-header-offset: 4rem;
+        position: relative;
+        max-width: none;
+        width: 100vw;
+        margin-left: calc(var(--page-gutter, 1.5rem) * -1);
+        margin-top: calc(var(--hero-header-offset) * -1);
+        margin-bottom: 0;
+        padding-top: var(--hero-header-offset);
+        overflow: hidden;
+        color: var(--project-fg);
+        background:
+          radial-gradient(ellipse at 82% 22%, color-mix(in srgb, var(--project-accent), transparent 62%), transparent 30rem),
+          radial-gradient(ellipse at 78% 82%, color-mix(in srgb, var(--project-accent), transparent 76%), transparent 38rem),
+          linear-gradient(135deg, color-mix(in srgb, var(--project-bg), #00182f 24%), var(--project-bg) 52%, color-mix(in srgb, var(--project-bg), var(--project-accent) 22%));
+      }
+      .project-hero--marketing-row {
+        background: var(--project-bg);
+      }
+      .project-hero--clarus {
+        background: linear-gradient(145deg, #fffdfa 0%, var(--project-bg) 48%, #f1f0ec 100%);
+      }
+      @media (min-width: 768px) {
+        .project-hero { --hero-header-offset: 5rem; }
+      }
+      @media (min-width: 1200px) {
+        .project-hero { --hero-header-offset: 6rem; }
+      }
+      .project-hero__inner {
+        position: relative;
+        z-index: 1;
+        width: min(100%, 84rem);
+        margin: 0 auto;
+        padding: clamp(2rem, 5vw, 5rem) var(--page-gutter, 1.5rem) clamp(3rem, 7vw, 6rem);
+      }
+      .project-hero__back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        color: var(--project-muted);
+        font-size: 0.875rem;
+        text-decoration: none;
+        margin-bottom: clamp(1.5rem, 4vw, 3.5rem);
+      }
+      .project-hero__back:hover {
+        color: var(--project-fg);
+        background-color: transparent;
+      }
+      .project-hero__media {
+        position: relative;
+        min-height: clamp(18rem, 34vw, 31rem);
+        margin-bottom: clamp(2rem, 5vw, 4rem);
+      }
+      .project-hero__shot {
+        display: block;
+        max-width: none;
+        border: 1px solid rgb(255 255 255 / 0.22);
+        background-color: rgb(255 255 255 / 0.1);
+        box-shadow: 0 0.85rem 1.8rem rgb(0 0 0 / 0.18);
+      }
+      .project-hero--phones .project-hero__media {
+        min-height: clamp(17rem, 30vw, 25rem);
+        margin-bottom: clamp(1.25rem, 3vw, 2rem);
+      }
+      .project-hero--phones .project-hero__shot {
+        position: absolute;
+        left: 50%;
+        bottom: -1rem;
+        width: clamp(11rem, 14vw, 15rem);
+        aspect-ratio: 1242 / 2208;
+        border-radius: 1.8rem;
+        object-fit: cover;
+        transform-origin: 50% 100%;
+      }
+      .project-hero--phones .project-hero__shot:nth-child(1) {
+        z-index: 1;
+        opacity: 0.44;
+        transform: translateX(-120%) rotate(-12deg) scale(0.92);
+      }
+      .project-hero--phones .project-hero__shot:nth-child(2) {
+        z-index: 3;
+        transform: translateX(-50%) scale(1.06);
+      }
+      .project-hero--phones .project-hero__shot:only-child {
+        z-index: 3;
+        opacity: 1;
+        transform: translateX(-50%) scale(1.06);
+      }
+      .project-hero--phones .project-hero__shot:nth-child(3) {
+        z-index: 2;
+        opacity: 0.48;
+        transform: translateX(20%) rotate(12deg) scale(0.92);
+      }
+      .project-hero--desktop .project-hero__inner,
+      .project-hero--clarus .project-hero__inner {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(28rem, 1.1fr);
+        align-items: center;
+        gap: clamp(2rem, 6vw, 6rem);
+        min-height: clamp(34rem, 72vh, 48rem);
+      }
+      .project-hero--desktop .project-hero__back,
+      .project-hero--clarus .project-hero__back {
+        position: absolute;
+        top: clamp(2rem, 5vw, 5rem);
+        left: var(--page-gutter, 1.5rem);
+      }
+      .project-hero--desktop .project-hero__media,
+      .project-hero--clarus .project-hero__media {
+        order: 2;
+        display: grid;
+        place-items: center end;
+        min-height: clamp(24rem, 38vw, 34rem);
+        margin: 0;
+      }
+      .project-hero--desktop .project-hero__copy,
+      .project-hero--clarus .project-hero__copy {
+        order: 1;
+        padding-top: 3rem;
+      }
+      .project-hero--desktop .project-hero__shot,
+      .project-hero--clarus .project-hero__shot {
+        grid-area: 1 / 1;
+        width: min(100%, 42rem);
+        margin-left: auto;
+        border-radius: 0.35rem;
+        transform-origin: 58% 52%;
+      }
+      .project-hero--desktop .project-hero__shot:nth-child(1),
+      .project-hero--clarus .project-hero__shot:nth-child(1) {
+        z-index: 3;
+      }
+      .project-hero--desktop .project-hero__shot:nth-child(2),
+      .project-hero--clarus .project-hero__shot:nth-child(2) {
+        z-index: 2;
+        opacity: 0.82;
+        transform: translate(-8%, -7%) scale(0.94);
+      }
+      .project-hero--desktop .project-hero__shot:nth-child(3),
+      .project-hero--clarus .project-hero__shot:nth-child(3) {
+        z-index: 1;
+        opacity: 0.64;
+        transform: translate(8%, 8%) scale(0.88);
+      }
+      .project-hero--clarus .project-hero__tag {
+        color: var(--project-accent);
+        background-color: color-mix(in srgb, var(--project-accent), transparent 88%);
+      }
+      .project-hero--clarus .project-hero__shot {
+        border-color: rgb(15 23 42 / 0.1);
+        background-color: #fff;
+        box-shadow: 0 1rem 2.5rem rgb(15 23 42 / 0.12);
+      }
+      .project-hero--marketing-row .project-hero__inner {
+        display: grid;
+        grid-template-columns: minmax(42rem, 52rem) minmax(0, 1fr);
+        grid-template-areas:
+          "back back"
+          "copy media";
+        align-items: end;
+        column-gap: clamp(7rem, 12vw, 16rem);
+        row-gap: clamp(2rem, 4vw, 3rem);
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0;
+        padding-right: 0;
+      }
+      .project-hero--marketing-row .project-hero__back {
+        grid-area: back;
+        margin-bottom: 0;
+      }
+      .project-hero--marketing-row .project-hero__media {
+        grid-area: media;
+        align-self: stretch;
+        display: flex;
+        align-items: flex-start;
+        gap: 0;
+        min-width: 0;
+        min-height: clamp(30rem, 62vh, 48rem);
+        margin: 0;
+        overflow: hidden;
+        order: 2;
+      }
+      .project-hero--marketing-row .project-hero__shot {
+        flex: 0 0 auto;
+        width: auto;
+        height: clamp(30rem, 62vh, 48rem);
+        border: 0;
+        border-radius: 0;
+        background-color: transparent;
+        box-shadow: none;
+      }
+      .project-hero--marketing-row .project-hero__copy {
+        grid-area: copy;
+        box-sizing: border-box;
+        order: 1;
+        padding-bottom: clamp(1rem, 5vh, 4rem);
+      }
+      .project-hero--marketing-row h1 {
+        max-width: 13ch;
+      }
+      .project-hero__eyebrow {
+        color: var(--project-muted);
+        font-size: 0.875rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        margin: 0 0 1rem;
+        text-transform: uppercase;
+      }
+      .project-hero__tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.625rem;
+        list-style: none;
+        margin: 0 0 clamp(1.5rem, 3vw, 2.25rem);
+        padding: 0;
+      }
+      .project-hero__tag {
+        color: var(--project-fg);
+        background-color: rgb(255 255 255 / 0.16);
+        border-radius: 999px;
+        font-family: Consolas, Monaco, monospace;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        padding: 0.38rem 0.72rem;
+      }
+      .project-hero h1 {
+        color: var(--project-fg);
+        font-size: clamp(3rem, 6vw, 6.25rem);
+        letter-spacing: 0;
+        line-height: 1;
+        max-width: 13ch;
+        margin-bottom: 1.25rem;
+      }
+      .project-hero--desktop h1,
+      .project-hero--clarus h1 {
+        font-size: clamp(3rem, 5vw, 5.5rem);
+        max-width: 12ch;
+      }
+      .project-hero__description {
+        color: var(--project-muted);
+        max-width: 42rem;
+        font-size: clamp(1rem, 1.7vw, 1.35rem);
+        line-height: 1.5;
+        margin: 0 0 2.5rem;
+      }
+      .project-hero__facts {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: clamp(1rem, 4vw, 4rem);
+        color: var(--project-muted);
+      }
+      .project-hero__fact-label {
+        color: var(--project-fg);
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        margin: 0 0 0.5rem;
+        text-transform: uppercase;
+      }
+      .project-hero__fact-value {
+        margin: 0;
+      }
+      .project-hero__link {
+        color: var(--project-fg);
+        text-decoration-color: color-mix(in srgb, var(--project-fg), transparent 45%);
+      }
+      .project-hero__link:hover {
+        background-color: rgb(255 255 255 / 0.14);
+      }
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        font-size: 0.875rem;
+        color: rgb(var(--color-text-secondary));
+        text-decoration: none;
+        margin-bottom: 2.5rem;
+        transition: color 0.1s ease-out;
+      }
+      .back-link:hover {
+        color: rgb(var(--color-text));
+        background-color: transparent;
+      }
+      .post-header {
+        margin-bottom: 2rem;
+      }
+      .post-header h1 {
+        margin-bottom: 0.5rem;
+      }
+      .post-meta {
+        color: rgb(var(--color-text-secondary));
+        font-size: 0.875rem;
+        margin: 0 0 0.75rem;
+      }
+      .post-meta span {
+        margin-right: 0.25rem;
+      }
+      .meta-separator {
+        opacity: 0.5;
+        margin-right: 0.25rem;
+      }
+      .external-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-size: 0.875rem;
+        color: rgb(var(--color-text-secondary));
+        margin-bottom: 1.5rem;
+        transition: color 0.1s ease-out;
+      }
+      .external-link:hover {
+        color: rgb(var(--color-text));
+        background-color: transparent;
+      }
+      .stack-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.375rem;
+        list-style: none;
+        margin: 0 0 2rem;
+        padding: 0;
+      }
+      .stack-tag {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 0.25em;
+        background-color: rgb(var(--color-text) / 0.06);
+        color: rgb(var(--color-text-secondary));
+        font-family: Consolas, Monaco, monospace;
+      }
+      .project-body {
+        line-height: 1.7;
+      }
+      .project-body h2 {
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        font-size: 1.375rem;
+      }
+      .project-body h3 {
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        font-size: 1.125rem;
+      }
+      .project-body ul,
+      .project-body ol {
+        margin: 0 0 1.5em 0;
+        padding-left: 1.5em;
+      }
+      .project-body ul { list-style: disc; }
+      .project-body ol { list-style: decimal; }
+      .project-body li {
+        margin-bottom: 0.4em;
+      }
+      .project-body li::marker {
+        color: rgb(var(--color-accent));
+      }
+      .project-body strong {
+        font-weight: 700;
+        color: rgb(var(--color-text));
+      }
+      :global(.project-body p:has(> img:only-child)),
+      :global(.project-body .project-image-grid) {
+        max-width: none;
+        width: calc(100vw - var(--page-gutter, 1.5rem));
+        margin: 2.75rem 0;
+      }
+      :global(.project-body p:has(> img:only-child) img),
+      :global(.project-body .project-image-grid img) {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 1px solid rgb(var(--color-border));
+        border-radius: 0.75rem;
+        background-color: rgb(var(--color-text) / 0.04);
+      }
+      :global(.project-body .project-image-grid) {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+        align-items: start;
+        gap: 1rem;
+      }
+      :global(.project-body .project-image-grid img) {
+        height: min(42rem, 70vh);
+        object-fit: contain;
+      }
+      .screenshot-gallery {
+        display: flex;
+        gap: 0.75rem;
+        overflow-x: auto;
+        margin: 0 0 2.5rem;
+        padding-bottom: 0.5rem;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+      }
+      .screenshot-gallery img {
+        height: 28rem;
+        width: auto;
+        border-radius: 1rem;
+        flex-shrink: 0;
+        display: block;
+      }
+      @media (min-width: 901px) and (max-width: 1400px) {
+        .project-hero--marketing-row .project-hero__inner {
+          grid-template-columns: minmax(30rem, 38rem) minmax(0, 1fr);
+          column-gap: clamp(3rem, 6vw, 5rem);
+        }
+        .project-hero--marketing-row .project-hero__shot {
+          height: clamp(26rem, 58vh, 38rem);
+        }
+        .project-hero--marketing-row h1 {
+          max-width: 11ch;
+        }
+      }
+      @media (max-width: 900px) {
+        .project-hero--desktop .project-hero__inner,
+        .project-hero--clarus .project-hero__inner {
+          display: block;
+          min-height: 0;
+        }
+        .project-hero--desktop .project-hero__media,
+        .project-hero--clarus .project-hero__media {
+          margin: 4rem 0 2rem;
+        }
+        .project-hero--desktop .project-hero__copy,
+        .project-hero--clarus .project-hero__copy {
+          padding-top: 0;
+        }
+        .project-hero--marketing-row .project-hero__inner {
+          display: block;
+          padding-right: 0;
+        }
+        .project-hero--marketing-row .project-hero__back {
+          margin-bottom: 2rem;
+        }
+        .project-hero--marketing-row .project-hero__media {
+          min-height: 0;
+          margin: 0 0 2rem;
+        }
+        .project-hero--marketing-row .project-hero__shot {
+          height: clamp(24rem, 58vh, 36rem);
+        }
+        .project-hero--marketing-row .project-hero__copy {
+          padding-right: var(--page-gutter, 1.5rem);
+          padding-bottom: 0;
+        }
+      }
+      @media (max-width: 640px) {
+        .project-page:has(.project-hero) article {
+          padding-top: 2.5rem;
+        }
+        .project-hero__inner {
+          padding-top: 1.25rem;
+        }
+        .project-hero__media,
+        .project-hero--phones .project-hero__media {
+          min-height: 20rem;
+          margin-bottom: 2rem;
+        }
+        .project-hero--phones .project-hero__shot {
+          width: 11rem;
+          border-radius: 1.25rem;
+        }
+        .project-hero--phones .project-hero__shot:nth-child(1) {
+          transform: translateX(-105%) rotate(-10deg) scale(0.9);
+        }
+        .project-hero--phones .project-hero__shot:nth-child(3) {
+          transform: translateX(5%) rotate(10deg) scale(0.9);
+        }
+        .project-hero h1 {
+          font-size: clamp(2.8rem, 17vw, 4.5rem);
+        }
+        .project-hero__facts {
+          grid-template-columns: 1fr;
+          gap: 1.25rem;
+        }
+      }
+    </style>
+  </head>
+  <body style={heroStyle}>
+    <Header transparent={!!hero} />
+    <main class="project-page">
+      {hero && (
+        <section class={`project-hero project-hero--${hero.variant}`} style={heroStyle}>
+          <div class="project-hero__inner">
+            <a href="/work" class="project-hero__back">← Work</a>
+
+            {heroScreenshot && (
+              <div class="project-hero__media" aria-hidden="true">
+                <img class="project-hero__shot" src={heroScreenshot} alt="" loading="eager" />
+              </div>
+            )}
+
+            <div class="project-hero__copy">
+              <p class="project-hero__eyebrow">{client ?? title}</p>
+              <ul class="project-hero__tags" aria-label="Project tags">
+                {(tags.length > 0 ? tags : stack).map((tag) => (
+                  <li class="project-hero__tag">{tag}</li>
+                ))}
+              </ul>
+              <h1>{hero.heading ?? title}</h1>
+              <p class="project-hero__description">{description}</p>
+              <div class="project-hero__facts">
+                <div>
+                  <p class="project-hero__fact-label">Role</p>
+                  <p class="project-hero__fact-value">{role}</p>
+                </div>
+                <div>
+                  <p class="project-hero__fact-label">Timeline</p>
+                  <p class="project-hero__fact-value">{dateLabel}</p>
+                </div>
+                <div>
+                  <p class="project-hero__fact-label">{externalUrl ? 'Link' : 'Client'}</p>
+                  <p class="project-hero__fact-value">
+                    {externalUrl ? (
+                      <a href={externalUrl} class="project-hero__link" target="_blank" rel="noopener noreferrer">
+                        {new URL(externalUrl).hostname} ↗
+                      </a>
+                    ) : (
+                      client ?? 'Independent'
+                    )}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <article>
+        {!hero && <a href="/work" class="back-link">← Work</a>}
+
+        {!hero && (
+          <div class="post-header">
+            <h1>{title}</h1>
+            <p class="post-meta">
+              <span>{role}</span>
+              <span class="meta-separator">·</span>
+              <span>{dateLabel}</span>
+              {client && (
+                <>
+                  <span class="meta-separator">·</span>
+                  <span>{client}</span>
+                </>
+              )}
+            </p>
+          </div>
+        )}
+
+        {!hero && externalUrl && (
+          <a href={externalUrl} class="external-link" target="_blank" rel="noopener noreferrer">
+            {new URL(externalUrl).hostname} ↗
+          </a>
+        )}
+
+        {!hero && (
+          <ul class="stack-list" aria-label="Tech stack">
+            {stack.map((tech) => (
+              <li class="stack-tag">{tech}</li>
+            ))}
+          </ul>
+        )}
+
+        <div class="project-body">
+          <slot />
+        </div>
+
+        {screenshots && screenshots.length > 0 && screenshotDisplay === 'carousel' && (
+          <ScreenshotCarousel screenshots={screenshots} title={title} client:load />
+        )}
+
+        {screenshots && screenshots.length > 0 && screenshotDisplay === 'strip' && (
+          <div class="screenshot-gallery" role="region" aria-label="App screenshots">
+            {screenshots.map((src, i) => (
+              <img src={src} alt={`${title} screenshot ${i + 1}`} loading="lazy" />
+            ))}
+          </div>
+        )}
+      </article>
+    </main>
+    <Footer />
+  </body>
+</html>
