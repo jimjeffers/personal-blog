@@ -27,6 +27,7 @@ const portfolio = defineCollection({
 			heroImage: image().optional(),
 			hero: z.object({
 				background: z.string(),
+				backgroundImage: z.string().optional(),
 				foreground: z.string(),
 				accent: z.string().optional(),
 				muted: z.string().optional(),

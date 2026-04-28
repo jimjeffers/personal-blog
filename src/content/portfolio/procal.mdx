@@ -25,6 +25,8 @@ tags: ["SaaS", "Entertainment", "Canvas Engineering", "Full-Stack"]
 order: 5
 ---
 
+import InlineSvg from '../../components/InlineSvg.astro';
+
 Entertainment production companies run on schedules — shoot days, crew calls, location bookings, talent windows, post-production timelines. Managing these across a slate of shows, with constantly shifting availability and overlapping constraints, is genuinely complex operational work.
 
 ProCal was built to replace the industry's reliance on large Excel grids and manual calendar logic with a purpose-built scheduling tool that understood the vocabulary of production.
@@ -48,6 +50,22 @@ The heart of ProCal is a **canvas-based calendar engine** built on Konva and rea
 **Snapshot versioning** lets production coordinators save named versions of a schedule — a feature that proved essential when studios needed to model "what if" scenarios before locking a production calendar.
 
 **PDF generation via AWS Lambda** produces call sheets and production reports formatted to industry standard, generated server-side to keep output consistent regardless of browser or OS.
+
+## UX Wins — Working with Customers
+
+ProCal's UI vocabulary came directly from the people using it. Production coordinators, line producers, and unit managers sat with me through iterative reviews where I sketched layouts on the canvas, walked through scheduling scenarios, and watched where they hesitated. The interaction language — the way events stack, the affordances around drag handles, the visual hierarchy of resources versus time — was tuned in those sessions, not designed in isolation.
+
+The result: a style and interaction system that mirrors how production teams already think about a schedule, rather than forcing them to translate their work into a generic calendar metaphor.
+
+<InlineSvg src="/portfolio/procal/Style-UX.svg" />
+
+## Performance Win — Making the DOM Optional
+
+The dense views — multi-month production arcs, full-slate resource grids — could push thousands of event nodes onto the screen at once. Rendering each event as DOM was viable for the day-level views, but tanked at the larger zoom levels: layout thrashing, scroll jank, and memory pressure that pushed Chrome into reflows on every drag.
+
+The win was treating the DOM as optional. The canvas-based calendar engine renders events directly to a Konva stage for the dense views, while the day-level views still use DOM where the affordances (text selection, native focus management, accessibility tooling) matter more than raw render throughput. Events share a single data model, so switching between modes is a render-strategy swap rather than a parallel implementation.
+
+<InlineSvg src="/portfolio/procal/Konva-Migration.svg" />
 
 ## Technical Highlights
 

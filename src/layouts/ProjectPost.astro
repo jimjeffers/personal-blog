@@ -38,7 +38,8 @@ const heroStyle = hero
       `--project-fg: ${hero.foreground}`,
       `--project-accent: ${hero.accent ?? hero.foreground}`,
       `--project-muted: ${hero.muted ?? hero.foreground}`,
-    ].join(';')
+      hero.backgroundImage ? `--project-bg-image: url('${hero.backgroundImage}')` : null,
+    ].filter(Boolean).join(';')
   : undefined;
 ---
 
@@ -78,6 +79,13 @@ const heroStyle = hero
       }
       .project-hero--clarus {
         background: linear-gradient(145deg, #fffdfa 0%, var(--project-bg) 48%, #f1f0ec 100%);
+      }
+      .project-hero--with-image {
+        background:
+          radial-gradient(ellipse 90% 90% at 50% 50%, transparent 0%, color-mix(in srgb, var(--project-bg), transparent 60%) 55%, var(--project-bg) 100%),
+          linear-gradient(135deg, color-mix(in srgb, var(--project-bg), transparent 24%) 0%, color-mix(in srgb, var(--project-bg), transparent 52%) 55%, color-mix(in srgb, var(--project-bg), transparent 18%) 100%),
+          var(--project-bg-image) center / cover no-repeat,
+          var(--project-bg);
       }
       @media (min-width: 768px) {
         .project-hero { --hero-header-offset: 5rem; }
@@ -324,6 +332,7 @@ const heroStyle = hero
       .project-hero__link {
         color: var(--project-fg);
         text-decoration-color: color-mix(in srgb, var(--project-fg), transparent 45%);
+        white-space: nowrap;
       }
       .project-hero__link:hover {
         background-color: rgb(255 255 255 / 0.14);
@@ -541,7 +550,7 @@ const heroStyle = hero
     <Header transparent={!!hero} />
     <main class="project-page">
       {hero && (
-        <section class={`project-hero project-hero--${hero.variant}`} style={heroStyle}>
+        <section class={`project-hero project-hero--${hero.variant}${hero.backgroundImage ? ' project-hero--with-image' : ''}`} style={heroStyle}>
           <div class="project-hero__inner">
             <a href="/work" class="project-hero__back">← Work</a>
 

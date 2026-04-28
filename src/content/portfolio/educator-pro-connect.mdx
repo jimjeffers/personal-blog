@@ -1,6 +1,6 @@
 ---
 title: "Educator PRO Connect"
-description: "An AI-powered matching platform connecting K–12 educators with professional development opportunities, built for the Maricopa County School Superintendent's office."
+description: "The platform has successfully coordinated career events impacting 70,000+ students in Maricopa County over 6 years and counting."
 client: "Maricopa County School Superintendent"
 role: "Sole Developer"
 stack: ["TypeScript", "React", "Python", "FastAPI", "PostgreSQL", "pgvector", "OpenAI API", "GraphQL", "Apollo", "React Query", "SQLAlchemy"]
@@ -11,7 +11,7 @@ hero:
   foreground: "#ffffff"
   accent: "#F26724"
   muted: "rgba(255,255,255,0.76)"
-  heading: "AI matching platform for K–12 educator development"
+  heading: "Building STEM Career Pathways for Students"
   variant: desktop
   screenshots:
     - /portfolio/educator-pro-connect/epc-dashboard.png
@@ -26,6 +26,8 @@ tags: ["AI", "Full-Stack", "EdTech", "Matching Systems"]
 order: 4
 externalUrl: "https://educatorproconnect.org"
 ---
+
+import InlineSvg from '../../components/InlineSvg.astro';
 
 Maricopa County is home to over 60 school districts and tens of thousands of educators. The Superintendent's office runs professional development programs — certifications, workshops, coaching engagements — but connecting the right educator to the right opportunity had historically been a manual, spreadsheet-driven process.
 
@@ -42,6 +44,28 @@ Starting from a product brief and a whiteboard, I designed and built the entire 
 **The migration** involved moving the backend from Node.js/GraphQL to Python/FastAPI with SQLAlchemy 2.0 and Alembic — maintaining dual data-fetching during the transition period (Apollo + React Query) to avoid a hard cutover.
 
 **A real-time messaging layer** supports communication between educators and program coordinators built on WebSocket with a notifications system for application status changes.
+
+## Matching System Evolution
+
+### V1 — Deterministic weighted scoring
+
+The first version of the matching engine relied on a hierarchical taxonomy: each user profile was scored against opportunities through a deterministic weighted system that compared standard, content area, and subject levels. Pre-calculated profile matches were stored across all content areas, giving fast lookups but with O(n) storage costs that scaled poorly as the catalog grew.
+
+<InlineSvg src="/portfolio/educator-pro-connect/v1-matching-system.svg" />
+
+The V1 stack was serverless on AWS: API Gateway fronted a TypeScript Lambda that wrote to DynamoDB. It was fast to ship but the key-value model made evolving the matching schema painful, and Lambda cold starts hurt the matching endpoints once the catalog grew.
+
+<InlineSvg src="/portfolio/educator-pro-connect/V1-Service-Architecture.svg" />
+
+### V2 — Embedding-based semantic matching
+
+V2 replaces the hand-tuned scoring with vector embeddings. Profile attributes — job title, company, intro, and keyword defaults derived from profile details — are concatenated and embedded via the OpenAI embeddings API. Matching becomes a vector similarity search, letting users still customize keywords while semantic search handles the heavy lifting. No precomputed match tables; storage stays bounded as the catalog scales.
+
+<InlineSvg src="/portfolio/educator-pro-connect/v2-matching-system.svg" />
+
+V2 moved the runtime onto AWS App Runner with a Python/FastAPI service, and swapped DynamoDB for PostgreSQL + pgvector. The relational model handles the richer credentialing schema cleanly, and pgvector colocates vector similarity search with the rest of the data — no separate vector store to operate.
+
+<InlineSvg src="/portfolio/educator-pro-connect/V2-Service-Architecture.svg" />
 
 ## Technical Highlights
 
