@@ -1,0 +1,34 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+
+interface Props {
+  src: string;
+  class?: string;
+  width?: string;
+}
+
+const { src, class: className, width = '60%' } = Astro.props;
+const filePath = path.join(process.cwd(), 'public', src.replace(/^\//, ''));
+const raw = fs.readFileSync(filePath, 'utf-8');
+const content = raw
+  .replace(/#1e1e1e/gi, 'currentColor')
+  .replace(/<rect([^>]*?)fill="#ffffff"/gi, '<rect$1fill="transparent"');
+---
+
+<figure class:list={['inline-svg', className]} style={`--inline-svg-width: ${width}`} set:html={content} />
+
+<style>
+  .inline-svg {
+    margin: 2.5rem 0;
+    color: rgb(var(--color-text));
+    display: block;
+  }
+  .inline-svg :global(svg) {
+    display: block;
+    width: var(--inline-svg-width, 60%);
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+</style>

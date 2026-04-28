@@ -1,0 +1,42 @@
+---
+title: "MBARI LRAUV Pilot Dashboard"
+description: "A real-time command and telemetry dashboard for MBARI's Long-Range Autonomous Underwater Vehicle fleet — giving scientists and pilots live visibility into mission data at sea."
+client: "Monterey Bay Aquarium Research Institute"
+role: "Technical Lead"
+stack: ["React 19", "TypeScript", "Vite 6", "TanStack Router", "React Query", "MSW", "WebSocket", "Axios"]
+startDate: 2022-03-01
+featured: true
+tags: ["Real-Time", "Dashboard", "Research", "Full-Stack"]
+order: 3
+externalUrl: "https://mbari.org"
+---
+
+MBARI's Long-Range Autonomous Underwater Vehicles (LRUAVs) are torpedo-shaped robots that operate for weeks at a time in the deep ocean, collecting oceanographic data on temperature, salinity, oxygen levels, and biological activity. When one surfaces to transmit data, the science team needs to understand what it found — fast — before deciding whether to adjust the mission or recall the vehicle.
+
+I came in as Technical Lead to rebuild the dashboard that gives scientists and vehicle pilots a live window into that data.
+
+## The Challenge
+
+The existing system was built for a narrow set of use cases and had grown unwieldy as the LRAUV program expanded. The interface couldn't keep up with the volume of telemetry fields (80+ sensor streams), mission state variables, or the growing complexity of multi-vehicle operations.
+
+The rebuild needed to be fast, maintainable, and extensible enough to support years of future mission types.
+
+## What I Built
+
+I led a ground-up rebuild from Next.js to **React 19 + Vite 6 + TanStack Router**, establishing a new architecture that could handle the full complexity of LRAUV telemetry.
+
+**The API layer** is a two-tier client: 50+ typed Axios endpoint functions mapped to a 49-hook React Query layer — one hook per logical data concern. This separation means the UI never knows about fetch mechanics; it only knows about data state.
+
+**Real-time telemetry** streams 80+ sensor fields via WebSocket with a subscription model that lets individual dashboard panels opt into only the data they need, keeping re-renders surgical.
+
+**Mission state** — vehicle position, dive depth, payload status, abort conditions, comms windows — is rendered on a map view that updates as surfacing events come in.
+
+**The test layer** was built from scratch with MSW (Mock Service Worker) for API mocking and dependency injection patterns that make the codebase testable without a live vehicle. Coverage now exceeds 95%.
+
+## Technical Highlights
+
+- Migrated from Next.js to React 19 + Vite 6 + TanStack Router for faster builds and better SPA performance
+- 50+ typed Axios endpoint functions with a matching React Query hook layer
+- WebSocket subscription model for 80+ sensor telemetry streams
+- MSW-based test infrastructure with 95%+ coverage
+- Accessible mission map with live vehicle position and depth visualization

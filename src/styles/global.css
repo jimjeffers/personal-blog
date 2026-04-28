@@ -42,10 +42,16 @@
   }
 
   main {
+    --page-gutter: 1.5rem;
     width: 100%;
-    max-width: 40rem;
+    max-width: none;
+    box-sizing: border-box;
     margin: 0;
     padding: 2rem 1.5rem;
+  }
+
+  main > * {
+    max-width: 40rem;
   }
 
   @media (min-width: 768px) {
@@ -53,6 +59,7 @@
       padding-top: 5rem;
     }
     main {
+      --page-gutter: 3rem;
       padding: 2rem 3rem;
     }
   }
@@ -62,6 +69,7 @@
       padding-top: 6rem;
     }
     main {
+      --page-gutter: 6rem;
       padding: 3rem 6rem;
     }
   }
@@ -195,6 +203,7 @@
     }
 
     main {
+      --page-gutter: 1rem;
       padding: 1rem;
     }
   }

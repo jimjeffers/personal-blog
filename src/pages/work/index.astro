@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const projects = (await getCollection('portfolio')).sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title="Work — Jim Jeffers"
+      description="Selected projects in AI, full-stack engineering, and product development."
+    />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <div class="page-header">
+        <h1>Work</h1>
+        <p class="tagline">Selected projects in AI, full-stack engineering, and product development.</p>
+      </div>
+      <ul class="projects-list">
+        {projects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            role={project.data.role}
+            client={project.data.client}
+            stack={project.data.stack}
+            startDate={project.data.startDate}
+            endDate={project.data.endDate}
+            href={`/work/${project.id}/`}
+            externalUrl={project.data.externalUrl}
+            featured={project.data.featured}
+            tags={project.data.tags}
+          />
+        ))}
+      </ul>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .page-header {
+    margin-bottom: 3rem;
+  }
+  .page-header h1 {
+    margin-bottom: 0.5rem;
+  }
+  .tagline {
+    color: rgb(var(--color-text-secondary));
+    font-size: 1.125rem;
+    margin: 0;
+  }
+  .projects-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+</style>
