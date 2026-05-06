@@ -1,5 +1,5 @@
 ---
-title: It's About the Outcome, Not the Means
+title: Focus on the Outcome Not the Means
 description: Focus on strategic impact with coding agents by optimizing existing processes rather than chasing output metrics. Learn outcome-first thinking for maximum ROI.
 tags:
   - coding agents
@@ -11,8 +11,6 @@ status: draft
 pubDate: "Apr 18 2026"
 category: Software Development
 ---
-
-# Focus on the Outcome Not the Means
 
 The concept of outcome-first thinking isn't new in software development - coding agents just put this in the spotlight. You need to focus on the outcome not the means. 
 
