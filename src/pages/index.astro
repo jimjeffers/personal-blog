@@ -48,7 +48,7 @@ const posts = (await getCollection('blog')).sort(
         text-decoration-color: rgb(var(--color-accent) / 0.5);
       }
       .post-title {
-        font-family: 'Jost', system-ui, sans-serif;
+        font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
         font-weight: var(--header-weight);
         font-size: 1.75rem;
         margin: 0 0 0.5rem 0;
@@ -63,7 +63,6 @@ const posts = (await getCollection('blog')).sort(
       .post-meta {
         color: rgb(var(--color-text-secondary));
         font-size: 0.8125rem;
-        opacity: 0.8;
       }
       .post-meta span {
         margin-right: 0.5rem;
@@ -72,13 +71,13 @@ const posts = (await getCollection('blog')).sort(
         margin-right: 0;
       }
       .meta-separator {
-        opacity: 0.5;
+        color: rgb(var(--color-text-secondary));
       }
     </style>
   </head>
   <body>
     <Header />
-    <main>
+    <main id="content" tabindex="-1">
       <div class="page-header">
         <h1>Blog</h1>
         <p class="tagline">Thoughtfulness For Thoughtless Times.</p>
