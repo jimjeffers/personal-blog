@@ -3,26 +3,26 @@
 /* boz.com-inspired theme */
 @layer base {
   @font-face {
-    font-family: 'Atkinson Hyperlegible';
-    src: url('/fonts/atkinson-regular.woff') format('woff');
+    font-family: 'Lato';
+    src: url('/fonts/lato-latin-400.woff2') format('woff2');
     font-style: normal;
     font-weight: 400;
     font-display: swap;
   }
 
   @font-face {
-    font-family: 'Atkinson Hyperlegible';
-    src: url('/fonts/atkinson-bold.woff') format('woff');
+    font-family: 'Lato';
+    src: url('/fonts/lato-latin-700.woff2') format('woff2');
     font-style: normal;
-    font-weight: 600;
+    font-weight: 700;
     font-display: swap;
   }
 
   @font-face {
-    font-family: 'Atkinson Hyperlegible';
-    src: url('/fonts/atkinson-bold.woff') format('woff');
+    font-family: 'Jost';
+    src: url('/fonts/jost-latin.woff2') format('woff2');
     font-style: normal;
-    font-weight: 700;
+    font-weight: 400 600;
     font-display: swap;
   }
 
@@ -51,7 +51,7 @@
   }
 
   html {
-    font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
+    font-family: 'Lato', system-ui, sans-serif;
     font-size-adjust: from-font;
     font-size: 20px;
     line-height: 1.6;
@@ -100,7 +100,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
+    font-family: 'Jost', system-ui, sans-serif;
     font-weight: var(--header-weight);
     line-height: 1.2;
     margin: 0 0 0.5rem 0;
