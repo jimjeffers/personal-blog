@@ -2,14 +2,39 @@
 
 /* boz.com-inspired theme */
 @layer base {
+  @font-face {
+    font-family: 'Lato';
+    src: url('/fonts/lato-latin-400.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Lato';
+    src: url('/fonts/lato-latin-700.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Jost';
+    src: url('/fonts/jost-latin.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 400 600;
+    font-display: swap;
+  }
+
   :root {
     /* Light mode colors */
     --color-bg: 255 255 255;
     --color-text: 20 20 20;
-    --color-text-secondary: 150 160 180;
+    --color-text-secondary: 84 91 105;
     --color-accent: 100 110 130;
     --color-border: 0 0 0 / 0.05;
     --header-weight: 600;
+    --color-scheme: light;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -17,19 +42,22 @@
       /* Dark mode colors */
       --color-bg: 31 34 37;
       --color-text: 211 213 214;
-      --color-text-secondary: 100 110 130;
+      --color-text-secondary: 156 166 178;
       --color-accent: 255 255 255;
       --color-border: 255 255 255 / 0.05;
       --header-weight: 400;
+      --color-scheme: dark;
     }
   }
 
   html {
     font-family: 'Lato', system-ui, sans-serif;
+    font-size-adjust: from-font;
     font-size: 20px;
     line-height: 1.6;
     background-color: rgb(var(--color-bg));
     color: rgb(var(--color-text));
+    color-scheme: var(--color-scheme);
     transition: background-color 0.1s ease-out, color 0.1s ease-out;
   }
 
@@ -48,6 +76,11 @@
     box-sizing: border-box;
     margin: 0;
     padding: 2rem 1.5rem;
+    scroll-margin-top: 5rem;
+  }
+
+  main:focus {
+    outline: none;
   }
 
   main > * {
@@ -131,6 +164,11 @@
     background-color: rgb(var(--color-accent) / 0.1);
   }
 
+  :where(a, button):focus-visible {
+    outline: 3px solid rgb(var(--color-accent));
+    outline-offset: 0.2rem;
+  }
+
   strong, b {
     font-weight: 700;
   }
@@ -207,6 +245,85 @@
       padding: 1rem;
     }
   }
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 1000;
+  transform: translateY(-150%);
+  background: rgb(var(--color-bg));
+  color: rgb(var(--color-text));
+  border: 2px solid rgb(var(--color-accent));
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  text-decoration: none;
+  transition: transform 0.1s ease-out;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.post-main .hero-image {
+  max-width: 40rem;
+  margin: 0 0 2rem;
+  padding: 0;
+}
+
+.post-main .hero-image img {
+  display: block;
+  width: 100%;
+  border-radius: 0.25rem;
+}
+
+.post-main article {
+  max-width: 40rem;
+  margin: 0;
+  padding: 0 0 2rem;
+}
+
+.post-main .post-header {
+  margin-bottom: 2.5rem;
+}
+
+.post-main .post-header h1 {
+  margin-bottom: 0.75rem;
+}
+
+.post-main .post-meta {
+  color: rgb(var(--color-text-secondary));
+  font-size: 0.875rem;
+}
+
+.post-main .post-meta span {
+  margin-right: 0.5rem;
+}
+
+.post-main .meta-separator {
+  color: rgb(var(--color-text-secondary));
+}
+
+.post-main .last-updated-on {
+  font-style: italic;
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+}
+
+.github-chart-container {
+  background: rgb(var(--color-text) / 0.05);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  margin: 1rem 0;
+  overflow: hidden;
+}
+
+.github-chart-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0.25rem;
 }
 
 .sr-only {
