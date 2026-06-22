@@ -20,34 +20,29 @@ screenshots:
   - /portfolio/06-light.png
   - /portfolio/01-light.png
 tags: ["AI", "Writing Tools", "SaaS", "Product"]
-order: 1
+order: 2
 externalUrl: "https://clarus.page"
 ---
 
-Clarus started from a simple frustration: AI writing tools kept trying to write *for* writers rather than write *with* them. Most tools optimize for speed and output volume — Clarus optimizes for voice, craft, and the experience of the writer.
+Clarus started from a simple frustration: AI writing tools kept trying to write *for* writers rather than write *with* them. Most tools optimize for speed and output volume, I built Clarus to optimize for voice, craft, and the writing experience.
 
 ## The Problem
 
-Creative writers — novelists, essayists, screenwriters — don't want their words replaced. They want a collaborator that understands narrative tension, character voice, pacing, and subtext. They want to get unstuck without losing the thread of what made their work theirs.
-
-Existing tools give generic completions. Clarus gives contextual craft support.
+I wanted to get back into writing regularly and found I often got frustrated or insecure about my writing when using tools like Grammarly which were too intrusive or simply chatting with an LLM for general feedback. I wanted a collaborator that understood how I wrote and provided proofreading and strategic editing which was grounded and unobtrusive.
 
 ## What I Built
 
-Clarus is a full-stack web application built on Astro with a React writing environment at its core. The AI layer is built on Anthropic's Claude API, with custom prompt architecture designed to act as a thoughtful writing partner rather than a completion engine.
+Clarus is a full-stack web application built on TanStack Start, React, and Convex. Given the solopreneur approach to this project I wanted to outsource as many of the technical decisions as possible to prevent going down any rabbit holes. The web application is mated to multiple agents which I trigger via convex mutations and execute on E2B sandboxes utilizing a mixture of models from Anthropic and Google.
 
 Key features include:
 
-- **Voice preservation** — the system learns from a writer's existing prose to ensure suggestions feel stylistically consistent
-- **Scene-level context** — rather than operating sentence by sentence, Clarus maintains awareness of chapter and narrative arc
-- **Craft mode vs. flow mode** — two distinct interaction models: one for drafting without interruption, one for deep revision work
-- **Block prompts** — structured creative prompts for when writers are stuck, tuned to the genre and tone of their current project
+- **Voice preservation**: the system imports a large corpus of your writing from your existing blog/website. If you don't have a body of work online you can upload a text or PDF file for the agent which utilizes a built in skill to create a stylometric model of your writing.
+- **Expert feedback**: instead of highlighting text as you write the agent is triggered manually by the user and generates is suggestions and edits via a dynamic rubric based on the style of the document being submitted. A piece classified as persuasive advertising content will be critiqued differently from a technical document.
+- **Built in Publishing**: sharing a document with other users provides a real time collaboration experience similar to google docs. Making the document public generates a link in a minimalist interface resembling a simple blog allowing authors to share their writing with the world with ease.
 
 ## Technical Highlights
 
-The writing environment is a custom rich-text editor built in React with tiptap, with real-time AI annotations that appear in a side channel rather than inline — preserving the writer's visual relationship with their own work.
-
-The backend handles streaming AI responses with a custom token budget system to keep interactions snappy even on longer documents. Session state is maintained across writes using a lightweight server-side cache.
+The writing environment is a custom rich-text editor built in React with tiptap. Real-time AI annotations render appear in the margin rather than inline. The backend handles streaming AI responses from E2B via a convex websocket mutation that is called repeatedly on an interval to prevent the Convex mutation from timing out and also maintaining a connection to the sandbox. The agent was implemented using pi-agent as the harness primarily due to it's extensibility.
 
 ## Status
 
