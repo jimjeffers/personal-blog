@@ -4,10 +4,31 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
+import { absUrl, type BreadcrumbItem } from '../../lib/structured-data';
 
 const projects = (await getCollection('portfolio')).sort(
   (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
 );
+
+// Portfolio list page (CollectionPage). Breadcrumb matches the visible nav.
+const site = Astro.site!;
+const breadcrumbs: BreadcrumbItem[] = [
+  { name: 'Home', url: '/' },
+  { name: 'Work', url: '/work/' },
+];
+
+// ItemList of the projects (positioned absolute links) for richer search appearance.
+const projectListNode = {
+  '@type': 'ItemList',
+  '@id': `${new URL('/work/', site).href}#projects`,
+  name: 'Work',
+  itemListElement: projects.map((project, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: project.data.title,
+    url: absUrl(site, `/work/${project.id}/`),
+  })),
+};
 ---
 
 <!doctype html>
@@ -16,6 +37,9 @@ const projects = (await getCollection('portfolio')).sort(
     <BaseHead
       title="Work — Jim Jeffers"
       description="Selected projects in AI, full-stack engineering, and product development."
+      webPageType="CollectionPage"
+      breadcrumbs={breadcrumbs}
+      jsonLd={[projectListNode]}
     />
   </head>
   <body>

@@ -6,17 +6,54 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { getReadTime } from '../utils/readTime';
+import type { BreadcrumbItem, WebPageType } from '../lib/structured-data';
 
-type Props = CollectionEntry<'blog'>['data'] & { body?: string };
+type Props = CollectionEntry<'blog'>['data'] & {
+	body?: string;
+	breadcrumbs?: BreadcrumbItem[];
+	jsonLd?: Record<string, unknown>[];
+	webPageType?: WebPageType;
+	mainEntityId?: string;
+	datePublished?: Date;
+	dateModified?: Date;
+};
 
-const { title, description, pubDate, updatedDate, heroImage, body } = Astro.props;
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	heroImage,
+	body,
+	breadcrumbs,
+	jsonLd,
+	webPageType,
+	mainEntityId,
+	datePublished,
+	dateModified,
+} = Astro.props;
 const readTime = body ? getReadTime(body) : null;
+
+// Fall back to the content's own pubDate/updatedDate when explicit schema
+// dates aren't passed, so any page using this layout (e.g. about.mdx, which
+// sets pubDate) still carries datePublished/dateModified into the schema.
+const resolvedDatePublished = datePublished ?? pubDate;
+const resolvedDateModified = dateModified ?? updatedDate ?? pubDate;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead
+      title={title}
+      description={description}
+      breadcrumbs={breadcrumbs}
+      jsonLd={jsonLd}
+      webPageType={webPageType}
+      mainEntityId={mainEntityId}
+      datePublished={resolvedDatePublished}
+      dateModified={resolvedDateModified}
+    />
   </head>
 
   <body>

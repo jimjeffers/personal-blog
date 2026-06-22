@@ -1,6 +1,12 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ProjectPost from '../../layouts/ProjectPost.astro';
+import {
+  creativeWorkNode,
+  SCHEMA_IDS,
+  type BreadcrumbItem,
+  type CreativeWorkNodeOptions,
+} from '../../lib/structured-data';
 
 export async function getStaticPaths() {
   const projects = await getCollection('portfolio');
@@ -12,8 +18,53 @@ export async function getStaticPaths() {
 
 const project = Astro.props;
 const { Content } = await render(project);
+
+const site = Astro.site!;
+const data = project.data;
+const canonicalUrl = new URL(`/work/${project.id}/`, site).href;
+
+// Prefer the hero background image, then the first hero screenshot, then the
+// first body screenshot. Asset paths are root-relative and resolved absolute
+// by the node builders against `site`.
+const heroImagePath =
+  data.hero?.backgroundImage ?? data.hero?.screenshots?.[0] ?? data.screenshots?.[0];
+
+// All portfolio projects are emitted as CreativeWork. SoftwareApplication is
+// intentionally avoided: Google's SoftwareApp rich result requires `name` plus
+// one of `aggregateRating`, `offers`, or `review`, and we have no truthful
+// price/rating/review data to assert. CreativeWork validates with no
+// required-field gap. If real offers/rating/review data ever exists, emit
+// SoftwareApplication via softwareApplicationNode with that data included.
+const workOptions: CreativeWorkNodeOptions = {
+  site,
+  url: canonicalUrl,
+  name: data.title,
+  description: data.description,
+  keywords: data.stack,
+  image: heroImagePath ? { url: heroImagePath } : undefined,
+  dateCreated: data.startDate,
+  externalUrl: data.externalUrl,
+  client: data.client,
+};
+
+const workNode = creativeWorkNode(workOptions);
+
+const breadcrumbs: BreadcrumbItem[] = [
+  { name: 'Home', url: '/' },
+  { name: 'Work', url: '/work/' },
+  { name: data.title, url: `/work/${project.id}/` },
+];
+
+const mainEntityId = `${canonicalUrl}${SCHEMA_IDS.work}`;
 ---
 
-<ProjectPost {...project.data}>
+<ProjectPost
+  {...data}
+  breadcrumbs={breadcrumbs}
+  jsonLd={[workNode]}
+  mainEntityId={mainEntityId}
+  datePublished={data.startDate}
+  dateModified={data.endDate ?? data.startDate}
+>
   <Content />
 </ProjectPost>
