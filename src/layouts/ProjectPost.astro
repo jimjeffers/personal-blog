@@ -4,8 +4,16 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import ScreenshotCarousel from '../components/ScreenshotCarousel';
+import type { BreadcrumbItem, WebPageType } from '../lib/structured-data';
 
-type Props = CollectionEntry<'portfolio'>['data'];
+type Props = CollectionEntry<'portfolio'>['data'] & {
+  breadcrumbs?: BreadcrumbItem[];
+  jsonLd?: Record<string, unknown>[];
+  webPageType?: WebPageType;
+  mainEntityId?: string;
+  datePublished?: Date;
+  dateModified?: Date;
+};
 
 const {
   title,
@@ -20,6 +28,12 @@ const {
   screenshots,
   screenshotDisplay,
   tags,
+  breadcrumbs,
+  jsonLd,
+  webPageType,
+  mainEntityId,
+  datePublished,
+  dateModified,
 } = Astro.props;
 
 function formatYear(date: Date) {
@@ -45,7 +59,16 @@ const heroStyle = hero
 
 <html lang="en">
   <head>
-    <BaseHead title={`${title} — Jim Jeffers`} description={description} />
+    <BaseHead
+      title={`${title} — Jim Jeffers`}
+      description={description}
+      breadcrumbs={breadcrumbs}
+      jsonLd={jsonLd}
+      webPageType={webPageType}
+      mainEntityId={mainEntityId}
+      datePublished={datePublished}
+      dateModified={dateModified}
+    />
     <style>
       article {
         max-width: 40rem;

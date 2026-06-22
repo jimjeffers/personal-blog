@@ -4,17 +4,70 @@
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
-import { SITE_TITLE } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION_SCHEMA } from '../consts';
+import {
+	buildGraph,
+	personNode,
+	websiteNode,
+	webPageNode,
+	breadcrumbNode,
+	type BreadcrumbItem,
+	type SchemaNode,
+	type WebPageType,
+} from '../lib/structured-data';
 
 interface Props {
 	title: string;
 	description: string;
 	image?: ImageMetadata;
+	/** Visible breadcrumb trail (omit on the root page). */
+	breadcrumbs?: BreadcrumbItem[];
+	/** Extra page-specific schema nodes (e.g. BlogPosting, CreativeWork). */
+	jsonLd?: Record<string, unknown>[];
+	/** WebPage subtype for this page. Defaults to 'WebPage'. */
+	webPageType?: WebPageType;
+	/** @id of the page's primary entity, wired as WebPage.mainEntity. */
+	mainEntityId?: string;
+	datePublished?: Date;
+	dateModified?: Date;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = FallbackImage } = Astro.props;
+const {
+	title,
+	description,
+	image = FallbackImage,
+	breadcrumbs,
+	jsonLd,
+	webPageType = 'WebPage',
+	mainEntityId,
+	datePublished,
+	dateModified,
+} = Astro.props;
+
+// Astro.site is guaranteed by astro.config.mjs (`site` is set).
+const site = Astro.site!;
+const canonicalHref = canonicalURL.href;
+const hasBreadcrumbs = !!breadcrumbs && breadcrumbs.length > 0;
+const breadcrumbId = hasBreadcrumbs ? `${canonicalHref}#breadcrumb` : undefined;
+
+const graph = buildGraph([
+	websiteNode(site, { name: SITE_TITLE, description: SITE_DESCRIPTION_SCHEMA }),
+	personNode(site),
+	webPageNode({
+		site,
+		url: canonicalHref,
+		name: title,
+		type: webPageType,
+		breadcrumbId,
+		mainEntityId,
+		datePublished,
+		dateModified,
+	}),
+	hasBreadcrumbs ? breadcrumbNode(site, canonicalHref, breadcrumbs!) : undefined,
+	...((jsonLd ?? []) as SchemaNode[]),
+]);
 ---
 
 <!-- Global Metadata -->
@@ -100,3 +153,6 @@ const { title, description, image = FallbackImage } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
+
+<!-- Structured data (schema.org JSON-LD) -->
+<script type="application/ld+json" set:html={JSON.stringify(graph)} />

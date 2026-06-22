@@ -4,18 +4,37 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_DESCRIPTION, SITE_DESCRIPTION_SCHEMA, SITE_TITLE } from '../consts';
 import { getReadTime } from '../utils/readTime';
 
 const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+
+// HOME = blog index (root page). Emit a Blog node for entity identity; no
+// breadcrumb on the root page. The WebPage subtype is CollectionPage.
+const site = Astro.site!;
+const blogNode = {
+  '@type': 'Blog',
+  '@id': `${site.origin}/#blog`,
+  name: SITE_TITLE,
+  description: SITE_DESCRIPTION_SCHEMA,
+  url: `${site.origin}/`,
+  inLanguage: 'en',
+  publisher: { '@id': `${site.origin}/#person` },
+  isPartOf: { '@id': `${site.origin}/#website` },
+};
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead
+      title={SITE_TITLE}
+      description={SITE_DESCRIPTION}
+      webPageType="CollectionPage"
+      jsonLd={[blogNode]}
+    />
     <style>
       .page-header {
         margin-bottom: 3rem;

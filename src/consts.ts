@@ -3,3 +3,39 @@
 
 export const SITE_TITLE = 'Jim Jeffers';
 export const SITE_DESCRIPTION = 'Welcome to my website!';
+
+/**
+ * Canonical site origin. `Astro.site` (from astro.config.mjs) remains the
+ * source of truth inside .astro files; this is provided for non-Astro consumers.
+ */
+export const SITE_URL = 'https://jimjeffers.com';
+
+/**
+ * Richer site description used for schema.org (the legacy SITE_DESCRIPTION above
+ * is kept intact for back-compat with existing imports).
+ */
+export const SITE_DESCRIPTION_SCHEMA =
+	'Personal site of Jim Jeffers — Co-founder & CTO of eDNA Explorer. Writing and selected work on software engineering, product, and design.';
+
+/** Owner / author / publisher — a single Person across the whole site. */
+export const AUTHOR = {
+	name: 'Jim Jeffers',
+	url: 'https://jimjeffers.com/',
+	jobTitle: 'Co-founder & CTO, eDNA Explorer',
+	sameAs: [
+		'https://github.com/jimjeffers',
+		'https://www.linkedin.com/in/jimjeffers',
+		'https://twitter.com/jimjeffers',
+	],
+	worksFor: {
+		name: 'eDNA Explorer',
+		url: 'https://ednaexplorer.org',
+	},
+	/** Square headshot served from /public (stable, crawlable URL for schema). */
+	image: {
+		url: '/jim-jeffers.webp',
+		width: 360,
+		height: 360,
+		caption: 'Jim Jeffers',
+	},
+} as const;

@@ -1,6 +1,8 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
+import FallbackImage from '../../assets/blog-placeholder-1.jpg';
+import { absUrl, blogPostingNode, type BreadcrumbItem } from '../../lib/structured-data';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
@@ -13,8 +15,46 @@ type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
 const { Content } = await render(post);
+
+const site = Astro.site!;
+const canonicalUrl = new URL('/blog/' + post.id + '/', site).href;
+
+const { title, description, pubDate, updatedDate, heroImage } = post.data;
+
+// Resolve the article image: hero (with intrinsic dimensions) if present,
+// else the shared OG fallback image. All values absolute https URLs.
+const imageSource = heroImage ?? FallbackImage;
+const image = {
+	url: absUrl(site, imageSource.src),
+	width: imageSource.width,
+	height: imageSource.height,
+};
+
+const blogPosting = blogPostingNode({
+	site,
+	url: canonicalUrl,
+	headline: title,
+	description,
+	datePublished: pubDate,
+	dateModified: updatedDate ?? pubDate,
+	image,
+	webpageId: `${canonicalUrl}#webpage`,
+});
+
+const breadcrumbs: BreadcrumbItem[] = [
+	{ name: 'Home', url: '/' },
+	{ name: title, url: '/blog/' + post.id + '/' },
+];
 ---
 
-<BlogPost {...post.data} body={post.body}>
+<BlogPost
+	{...post.data}
+	body={post.body}
+	breadcrumbs={breadcrumbs}
+	jsonLd={[blogPosting]}
+	mainEntityId={`${canonicalUrl}#article`}
+	datePublished={pubDate}
+	dateModified={updatedDate ?? pubDate}
+>
 	<Content />
 </BlogPost>
