@@ -3,9 +3,7 @@ title: Hello
 description: "An introduction to Jim, a lifelong programmer turned CTO of eDNA Explorer, and his return to writing about leadership, coding, business, and the transformative impact of AI."
 pubDate: 2026-01-28
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
 import Layout from '../layouts/BlogPost.astro';
-import GitHubChart from '../components/GitHubChart.astro';
 import { THEMES } from '../data/themes';
 
 export const GITHUB_USERNAME = 'jimjeffers';
@@ -35,28 +33,14 @@ If I'm not behind a book or a screen you can find me spending time with my famil
     id="github-chart"
     src={`https://ghchart.rshah.org/${THEMES[0].accentHex.replace('#', '')}/${GITHUB_USERNAME}`}
     alt="Jim Jeffers' GitHub Contribution Graph"
+    width="663"
+    height="104"
+    data-github-username={GITHUB_USERNAME}
     loading="lazy"
+    decoding="async"
   />
 </div>
 
 I'm building things all of the time. [Follow me on GitHub](https://github.com/jimjeffers/).
 
-<GitHubChart username={GITHUB_USERNAME} />
-
 </Layout>
-
-<style>{`
-  .github-chart-container {
-    background: rgb(var(--color-text) / 0.05);
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-    margin: 1rem 0;
-    overflow: hidden;
-  }
-  .github-chart-container img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 0.25rem;
-  }
-`}</style>

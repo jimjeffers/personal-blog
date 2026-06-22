@@ -2,20 +2,14 @@
 // You can import this data from anywhere in your site by using the `import` keyword.
 
 export const SITE_TITLE = 'Jim Jeffers';
-export const SITE_DESCRIPTION = 'Welcome to my website!';
+export const SITE_DESCRIPTION =
+	'Writing by Jim Jeffers on leadership, coding, business, software, and practical outcomes in the age of AI.';
 
 /**
  * Canonical site origin. `Astro.site` (from astro.config.mjs) remains the
  * source of truth inside .astro files; this is provided for non-Astro consumers.
  */
 export const SITE_URL = 'https://jimjeffers.com';
-
-/**
- * Richer site description used for schema.org (the legacy SITE_DESCRIPTION above
- * is kept intact for back-compat with existing imports).
- */
-export const SITE_DESCRIPTION_SCHEMA =
-	'Personal site of Jim Jeffers — Co-founder & CTO of eDNA Explorer. Writing and selected work on software engineering, product, and design.';
 
 /** Owner / author / publisher — a single Person across the whole site. */
 export const AUTHOR = {
