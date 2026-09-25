@@ -613,7 +613,7 @@ const heroStyle = hero
 
             {heroScreenshot && (
               <div class="project-hero__media" aria-hidden="true">
-                <img class="project-hero__shot" src={heroScreenshot} alt="" loading="eager" />
+                <img class="project-hero__shot" src={heroScreenshot} alt="" loading="eager" fetchpriority="high" />
               </div>
             )}
 
