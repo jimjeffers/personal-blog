@@ -6,12 +6,27 @@ role: "Technical Lead"
 stack: ["React 19", "TypeScript", "Vite 6", "TanStack Router", "React Query", "MSW", "WebSocket", "Axios"]
 startDate: 2022-03-01
 featured: true
+hero:
+  background: "#062d46"
+  backgroundImage: "/portfolio/mbari-lrauv/lrauv-at-sea.webp"
+  foreground: "#f2f8fb"
+  accent: "#6fd5ec"
+  muted: "rgba(242,248,251,0.78)"
+  heading: "A Live Window into Ocean Exploration"
+  variant: desktop
+  screenshots:
+    - /portfolio/mbari-lrauv/fleet-overview.webp
+screenshotDisplay: carousel
+screenshots:
+  - /portfolio/mbari-lrauv/fleet-overview.webp
+  - /portfolio/mbari-lrauv/mission-schedule.webp
+  - /portfolio/mbari-lrauv/science-telemetry.webp
 tags: ["Real-Time", "Dashboard", "Research", "Full-Stack"]
 order: 3
 externalUrl: "https://mbari.org"
 ---
 
-MBARI's Long-Range Autonomous Underwater Vehicles (LRUAVs) are torpedo-shaped robots that operate for weeks at a time in the deep ocean, collecting oceanographic data on temperature, salinity, oxygen levels, and biological activity. When one surfaces to transmit data, the science team needs to understand what it found — fast — before deciding whether to adjust the mission or recall the vehicle.
+MBARI's Long-Range Autonomous Underwater Vehicles (LRAUVs) are torpedo-shaped robots that operate for weeks at a time in the deep ocean, collecting oceanographic data on temperature, salinity, oxygen levels, and biological activity. When one surfaces to transmit data, the science team needs to understand what it found — fast — before deciding whether to adjust the mission or recall the vehicle.
 
 I came in as Technical Lead to rebuild the dashboard that gives scientists and vehicle pilots a live window into that data.
 
@@ -40,3 +55,5 @@ I led a ground-up rebuild from Next.js to **React 19 + Vite 6 + TanStack Router*
 - WebSocket subscription model for 80+ sensor telemetry streams
 - MSW-based test infrastructure with 95%+ coverage
 - Accessible mission map with live vehicle position and depth visualization
+
+<p><small>Splash photograph: LRAUV field trial in Monterey Bay, © 2010 MBARI. <a href="https://www.mbari.org/news/commercial-licensing-expands-access-to-innovative-mbari-technology/">View the original story.</a></small></p>
